@@ -1,0 +1,18 @@
+name: "Yay internet!"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "Resume"
+      href: about.html
+    - text: "Dashboard"
+      href: Dashboard.html
+    - icon: fa-envelope fa-lg
+      href: mailto:<xz3078@cumc.columbia.edu>
+    - icon: fa-github fa-lg
+      href: http://github.com/xyz7437/
+    - icon: fa-instagram fa-lg
+      href: https://www.instagram.com/cynthia_xyz_/
+output:
+  html_document:
+    theme: flatly
