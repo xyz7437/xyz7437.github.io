@@ -1,0 +1,51 @@
+---
+title: "Resume"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# Xinyi Zhou
+
+## CONTACT INFO
+
+E-mail: xz3078@cumc.columbia.edu | Mobile: +1 2404858287
+
+## EDUCATION BACKGROUND
+Columbia University, New York, NY  [Expected 05/2023]{style="float:right"}  
+•	 M.S. in Biostatics  
+
+University of Maryland (UMD), College Park, MD	[09/2017 – 05/2021]{style="float:right"}  
+•	B.S. in Mathematics, B.S. in Economy  
+•	GPA 3.61
+
+## INTERNSHIP EXPERIENCES
+### Amazon, Remote
+Data Analyst Assistant	[11/2020 – 12/2020]{style="float:right"}  
+•	Used regular expression in Python to search and clean the recruitment data in order to find each candidate’s abilities and expected place of work in Japanese.  
+•	Used k-means clustering in Python to categorize the data of Amazon suppliers.  
+•	Learned to explain the processes and results data analytics to audiences.  
+
+### Bayer, Remote
+Business Intelligence Assistant	[08/2020]{style="float:right"}    
+•	Predicted the local output and price of seeds in 2020 by exponential smoothing.  
+•	Predicted the top 3 growth/decline crops in 2020 based on the growth rate of output and price.  
+•	Used BCG Matrix to analyze current opportunities of development and help with future plan of production and investment.  
+•	Built models to observe the relations between local output, imports & exports, retails, and price in the last year, and the local output in 2020, and analyzed their meaning.
+
+### Agilent Technologies (Shanghai) Co., Ltd., Shanghai
+Software Localization Intern	[05/2018 – 08/2018]{style="float:right"}  
+•	Assisted software localization team in managing and optimizing the translation memory category and integrating the offline translation memories to the online GroupShare Server. 
+
+## EXTRACURRICULAR ACTIVITIES
+### UN1K Street Dance Club
+President	[09/2019 – 02/2021]{style="float:right"}   
+•	Recruited and interviewed participants in various events and participated in onsite works.  
+•	Cooperated with ACE Street Dance Club from George Washington University and took the charge of liaison, rehearsal, and stage design.  
+•	Responsible for internal affairs including recruiting, training, and reporting to the board.
+
+## SKILLS & HOBBIES
+•	Computer: Excel, HTML, Java Script, MATLAB, Stata, SAS, Python, R.   
+•	Hobbies: Dance (Street Dance, Jazz, Traditional Chinese Dance), Tennis, Table Tennis.
+
