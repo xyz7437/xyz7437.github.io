@@ -1,0 +1,65 @@
+---
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+data(ny_noaa)
+```
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Relationship between the tmin and tmax of weather station ADDISON, NY in 2000
+
+```{r}
+ny_noaa %>%
+  drop_na(tmax, tmin) %>%
+  separate(date, into = c("year", "month", "day"), sep = "\\-") %>%
+  filter(id == "USC00300023", year == "2000") %>%
+  mutate(tmax = as.numeric(tmax), tmin = as.numeric(tmin)) %>%
+  mutate(text_label = str_c("prcp: ", prcp, "\nsnow: ", snow)) %>%
+  plot_ly(
+    x = ~tmin, y = ~tmax, type = "scatter", mode = "markers",
+    color = ~month, text = ~text_label)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Weather stations with more than 1000 observations of prcp > 0 from 2005 to 2010
+
+```{r}
+ny_noaa %>%
+  separate(date, into = c("year", "month", "day"), sep = "\\-") %>%
+  mutate(year = as.numeric(year)) %>%
+  filter(year >= 2005, prcp > 0) %>%
+  count(id) %>% 
+  filter(n > 1000) %>%
+  mutate(id = fct_reorder(id, n)) %>% 
+  plot_ly(x = ~id, y = ~n, color = ~id, type = "bar", colors = "viridis")
+```
+
+### Boxplot of prcp of weather stations that have average prcp over 100mm in 2000
+
+
+```{r}
+ny_noaa %>%
+  separate(date, into = c("year", "month", "day"), sep = "\\-") %>%
+  filter(year == "2000", prcp > 0) %>%
+  group_by(id) %>%
+  mutate(mean_prcp = mean(prcp)) %>%
+  filter(mean_prcp > 100) %>%
+  mutate(id = fct_reorder(id, mean_prcp)) %>%
+  plot_ly(y = ~prcp, color = ~id, type = "box", colors = "viridis")
+```
+
