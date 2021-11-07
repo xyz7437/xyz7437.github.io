@@ -1,22 +1,33 @@
 <!DOCTYPE html>
-
-<html>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-<meta charset="utf-8" />
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
 
 
 
 <title>Dashboard</title>
 
+<meta property="og:title" content="Dashboard" />
+
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+
+<link rel="icon" href="data:image/x-icon;" type="image/x-icon">
+
+
+<script type="text/javascript">
+window.FlexDashboardComponents = [];
+</script>
+
+<script id="flexdashboard-navbar" type="application/json">
+[{"title":"Source Code","icon":"fa-code","href":"source_embed","align":"right"}]
+</script>
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -29,9 +40,13 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/stickytableheaders-0.1.19/jquery.stickytableheaders.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/featherlight-1.3.5/featherlight.min.css" rel="stylesheet" />
+<script src="site_libs/featherlight-1.3.5/featherlight.min.js"></script>
+<link href="site_libs/prism-1.4.1/prism.css" rel="stylesheet" />
+<script src="site_libs/prism-1.4.1/prism.js"></script>
 <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
@@ -39,192 +54,762 @@
 <script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
 <link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
-
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
+/*
+ Dashboard CSS from Keen IO Dashboards
+ (https://github.com/keen/dashboards)
+*/
 
+body {
+  background: #f2f2f2;
+  padding: 60px 0 0 8px; /* padding-top overridden by theme */
+}
 
+body hr {
+  border-color: #d7d7d7;
+  margin: 10px 0;
+}
 
+.navbar-inverse .navbar-nav > li > a,
+.navbar .navbar-brand {
+  text-decoration: none;
+}
 
+.navbar-logo {
+  margin-top: 1px;
+}
 
+.navbar-logo img {
+  margin-right: 12px;
+}
 
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-img {
-  max-width:100%;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-summary {
-  display: list-item;
-}
-pre code {
-  padding: 0;
-}
-</style>
-
-
-<style type="text/css">
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #adb5bd;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
+.navbar-author {
   margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
+  font-size: 15px;
 }
-</style>
 
-<script type="text/javascript">
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
+.navbar .dropdown-menu .fa {
+  min-width: 20px;
+}
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
-
-  // Navbar adjustments
-  var navHeight = $(".navbar").first().height() + 15;
-  var style = document.createElement('style');
-  var pt = "padding-top: " + navHeight + "px; ";
-  var mt = "margin-top: -" + navHeight + "px; ";
-  var css = "";
-  // offset scroll position for anchor links (for fixed navbar)
-  for (var i = 1; i <= 6; i++) {
-    css += ".section h" + i + "{ " + pt + mt + "}\n";
-  }
-  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
-  document.head.appendChild(style);
-});
-</script>
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
+.navbar .dropdown-menu {
+  min-width: 150px;
   max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  overflow: auto;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+.chart-wrapper,
+.nav-tabs-custom,
+.sbframe-commentary
+{
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  margin-right: 8px;
 }
 
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
+.chart-title {
+  border-bottom: 1px solid #d7d7d7;
+  color: #666;
+  font-size: 14px;
+  font-weight: 300;
+  padding: 7px 10px 4px;
 }
 
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-  background-color: transparent;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
+.chart-wrapper .chart-title:empty {
   display: none;
 }
+
+.chart-wrapper .chart-stage {
+  overflow: hidden;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.chart-wrapper .chart-notes {
+  background: #fbfbfb;
+  border-top: 1px solid #e2e2e2;
+  color: #808080;
+  font-size: 12px;
+  padding: 8px 10px 5px;
+}
+
+/*
+ CSS for handling flexbox layout
+*/
+
+#dashboard-container {
+  visibility: hidden;
+}
+
+.tab-content>.dashboard-page-wrapper.active {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dashboard-page-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dashboard-row-orientation {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dashboard-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.dashboard-row-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.dashboard-column-orientation {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.dashboard-column {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.chart-wrapper-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.chart-stage-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  position: relative;
+}
+
+.chart-shim {
+  position: absolute;
+  left: 8px; top: 8px; right: 8px; bottom: 8px;
+}
+
+.no-padding .chart-shim {
+  left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.flowing-content-shim {
+  overflow: auto;
+  left: 0; top: 0; right: 0; bottom: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.flowing-content-container {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.chart-stage .table-bordered {
+  border: none;
+}
+
+.chart-stage .table-bordered > tbody > tr > th,
+.chart-stage .table-bordered > tfoot > tr > th,
+.chart-stage .table-bordered > tbody > tr > td,
+.chart-stage .table-bordered > tfoot > tr > td {
+  border: none;
+}
+
+.chart-stage .table-bordered > tbody > tr > td {
+  border-top: 1px solid #dddddd;
+}
+
+.chart-stage .table-bordered > thead > tr > th {
+  border: none;
+  border-bottom: 2px solid #dddddd;
+}
+
+.bootstrap-table table>thead {
+  background-color: #fff;
+}
+
+.bootstrap-table table.data,
+.bootstrap-table table.shiny-table {
+  width: inherit !important;
+}
+
+.bootstrap-table table.data>tbody>tr>th,
+.bootstrap-table table.shiny-table>tbody>tr>th {
+  border-top: none;
+  border-bottom: 2px solid #dddddd;
+  padding: 5px;
+}
+
+.bootstrap-table .data td[align=right] {
+  font-family: inherit;
+}
+
+.chart-wrapper form {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.shiny-input-container label {
+  font-weight: normal;
+}
+
+.chart-stage .html-widget {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-stage .html-widget-static-bound {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-stage .shiny-bound-output {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Omit display of empty paragraphs */
+
+.chart-shim>p:empty {
+  display: none;
+}
+
+.chart-stage>p:empty {
+  display: none;
+}
+
+/* Omit display of special knitr options div*/
+
+.chart-stage .knitr-options {
+  display: none;
+}
+
+/* Automatically resizing images */
+
+.image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.image-container img {
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* Value box */
+
+.value-box {
+  border-radius: 2px;
+  position: relative;
+  display: block;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.value-box > .inner {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.value-box .value {
+  font-size: 38px;
+  font-weight: bold;
+  margin: 0 0 3px 0;
+  white-space: nowrap;
+  padding: 0;
+}
+
+.value-box .caption {
+  font-size: 15px;
+}
+.value-box .caption > small {
+  display: block;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.value-box .icon i {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 80px;
+  color: rgba(0, 0, 0, 0.15);
+}
+
+.linked-value:hover {
+  cursor: pointer;
+}
+
+.value-box.linked-value:hover {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* STORYBOARD */
+
+.storyboard-nav button {
+  background: transparent;
+  border: 0;
+  opacity: .3;
+  outline: none;
+  padding: 0;
+}
+
+.storyboard-nav button:hover,
+.storyboard-nav button:hover {
+  opacity: .5;
+}
+
+.storyboard-nav button:disabled,
+.storyboard-nav button:disabled {
+  opacity: .1;
+}
+
+.storyboard-nav .sbnext,
+.storyboard-nav .sbprev {
+  float: left;
+  width: 2%;
+  height: 120px;
+  font-size: 50px;
+}
+
+.storyboard-nav .sbprev {
+  text-align: left;
+  width: 2%;
+}
+
+.storyboard-nav .sbnext {
+  float: right;
+  text-align: right;
+  margin-right: 8px;
+}
+
+.storyboard-nav .sbframelist {
+  margin: 0 auto;
+  width: 94%;
+  height: 120px;
+  overflow: hidden;
+  text-shadow: none;
+  margin-bottom: 8px;
+}
+
+.storyboard-nav .sbframelist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.storyboard-nav .sbframelist ul li {
+  float: left;
+  width: 270px;
+  height: 100%;
+  padding: 10px 10px 10px 10px;
+  margin-right: 8px;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  color: #3a3c47;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.storyboard-nav .sbframelist ul li:last-child {
+  margin-right: 0px;
+}
+
+.storyboard-nav .sbframelist ul li.active {
+  color: #fff;
+  background: #B8B8B8;
+}
+
+.sbframe-commentary {
+  width: 300px;
+  background: #fbfbfb;
+  font-size: 14px;
+}
+
+.sbframe-commentary ul {
+  padding-left: 22px;
+}
+
+.sbframe.active {
+  display: flex;
+}
+
+.sbframe:not(.active) {
+  display: none;
+}
+
+/* NAV TABS */
+
+.nav-tabs-custom > .nav-tabs {
+  margin: 0;
+  border-bottom: 1px solid #d7d7d7;
+  color: #666;
+  font-size: 14px;
+  font-weight: 300;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+.nav-tabs-custom > .nav-tabs > li {
+  border-top: 3px solid transparent;
+  margin-bottom: -1px;
+  margin-right: 5px;
+}
+.nav-tabs-custom > .nav-tabs > li > a,
+.nav-tabs-custom > .nav-tabs > li > a:active {
+  color: #666;
+  font-weight: 300;
+  font-size: 14px;
+  border-radius: 0;
+  padding: 3px 10px 5px;
+  text-transform: none;
+}
+
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a {
+  border-bottom-color: transparent;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a.text-muted {
+  color: #999;
+}
+.nav-tabs-custom > .nav-tabs > li > a,
+.nav-tabs-custom > .nav-tabs > li > a:hover {
+  background: transparent;
+  margin: 0;
+}
+.nav-tabs-custom > .nav-tabs > li > a:hover {
+  color: #999;
+}
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:hover,
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:focus,
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:active {
+  border-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs > li.active {
+  border-top-color: #3c8dbc;
+}
+.nav-tabs-custom > .nav-tabs > li.active > a,
+.nav-tabs-custom > .nav-tabs > li.active:hover > a {
+  background-color: #fff;
+  color: #666;
+}
+.nav-tabs-custom > .nav-tabs > li.active > a {
+  border-top-color: transparent;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+}
+.nav-tabs-custom > .nav-tabs > li:first-of-type {
+  margin-left: 0;
+}
+.nav-tabs-custom > .nav-tabs > li:first-of-type.active > a {
+  border-left-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs.pull-right {
+  float: none !important;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li {
+  float: right;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type {
+  margin-right: 0;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type > a {
+  border-left-width: 1px;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type.active > a {
+  border-left-color: #d7d7d7;
+  border-right-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs > li.header {
+  line-height: 35px;
+  padding: 0 10px;
+  font-size: 20px;
+  color: #666;
+}
+.nav-tabs-custom > .nav-tabs > li.header > .fa,
+.nav-tabs-custom > .nav-tabs > li.header > .glyphicon,
+.nav-tabs-custom > .nav-tabs > li.header > .ion {
+  margin-right: 5px;
+}
+.nav-tabs-custom > .tab-content {
+  background: #fff;
+  padding: 0;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav-tabs-custom > .tab-content > .chart-wrapper {
+  background: #fff;
+  border: none;
+  margin: 0;
+}
+
+
+.nav-tabs-custom > .tab-content > .active {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav-tabs-custom .dropdown.open > a:active,
+.nav-tabs-custom .dropdown.open > a:focus {
+  background: transparent;
+  color: #999;
+}
+
+
+@media (max-width: 767px) {
+  .value-box {
+    text-align: center;
+    margin-right: 8px;
+  }
+  .value-box .icon {
+    display: none;
+  }
+}
+
+/* Fixed position sidebar */
+
+.section.sidebar {
+  position: fixed;
+  top: 51px; /* overridden by theme */
+  left: 0;
+  bottom: 0;
+  border-right: 1px solid #e2e2e2;
+  background-color: white; /* overridden by theme */
+  padding-left: 10px;
+  padding-right: 10px;
+  visibility: hidden;
+  overflow: auto;
+}
+
+.section.sidebar form p:first-child {
+  margin-top: 10px;
+}
+
+/* Embedded source code */
+
+#flexdashboard-source-code {
+  display: none;
+}
+
+.featherlight-content #flexdashboard-source-code {
+  display: inline-block;
+}
+
+.featherlight-content {
+  width: 80%;
+  max-width: 800px;
+  padding: 0 !important;
+  border-bottom: none !important;
+}
+
+.featherlight:last-of-type {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.featherlight-inner {
+  width: 100%;
+}
+
+.featherlight-content pre {
+  margin: 0;
+  border: 0;
+  background: #fff;
+  font-size: 12px;
+}
+
+.unselectable {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+#flexdashboard-source-code code {
+  -ms-user-select: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -o-user-select: text;
+  user-select: text;
+}
+
+/* DataTables Tweaks */
+
+.dataTables_filter input[type="search"] {
+  -webkit-appearance: searchfield;
+  outline: none;
+}
+
+.dataTables_wrapper.no-footer
+.dataTables_info {
+  padding-top: 0;
+}
+
+
+table.dataTable thead th {
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+  border-bottom: 1px solid #d7d7d7;
+}
+
+/* Mobile phone only CSS */
+
+.desktop-layout div.section.mobile {
+  display: none;
+}
+
+.mobile-layout div.section.no-mobile {
+  display: none;
+}
+
+.mobile-figure {
+  display: none;
+}
+
+
+
+body {
+  padding-top: 60px;
+}
+
+.section.sidebar {
+  top: 51px;
+  background-color: rgba(39, 128, 227, 0.1);
+}
+
+.value-box {
+  color: #f9f9f9;
+}
+
+.bg-primary {
+  background-color: rgba(39, 128, 227, 0.7);
+}
+
+.storyboard-nav .sbframelist ul li.active {
+  background-color: rgba(39, 128, 227, 0.7);
+}
+
+.nav-tabs-custom > .nav-tabs > li.active {
+  border-top-color: rgba(39, 128, 227, 0.7);
+}
+
+.bg-info {
+  background-color: rgba(153, 84, 187, 0.7);
+}
+
+.bg-warning {
+  background-color: rgba(255, 117, 24, 0.7);
+}
+
+.bg-danger {
+  background-color: rgba(255, 0, 57, 0.7);
+}
+
+.bg-success {
+  background-color: rgba(63, 182, 24, 0.7);
+}
+
+.chart-title {
+  font-weight: 500;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a,
+.nav-tabs-custom > .nav-tabs > li > a:active {
+  font-weight: 500;
+}
+
+@media only screen and (min-width: 768px) {
+html, body {
+  height: 100%;
+}
+
+#dashboard-container {
+  height: 100%;
+}
+}
 </style>
-
-<!-- code folding -->
-
 
 
 
@@ -232,160 +817,1958 @@ $(document).ready(function () {
 
 <body>
 
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="container-fluid">
+<div class="navbar-header">
 
-<div class="container-fluid main-container">
+<button id="navbar-button" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
 
-
-
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">Home</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="about.html">Resume</a>
-</li>
-<li>
-  <a href="Dashboard.html">Dashboard</a>
-</li>
-<li>
-  <a href="mailto:&lt;xz3078@cumc.columbia.edu&gt;">
-    <span class="fa fa-envelope fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="http://github.com/xyz7437/">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="https://www.instagram.com/cynthia_xyz_/">
-    <span class="fa fa-instagram fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-
-<div id="header">
-
-
-
-<h1 class="title toc-ignore">Dashboard</h1>
+<span class="navbar-logo pull-left">
+  
+</span>
+<span class="navbar-brand">
+  Dashboard
+  <span class="navbar-author">
+        </span>
+</span>
 
 </div>
+<div id="navbar" class="navbar-collapse collapse">
+<ul class="nav navbar-nav navbar-left">
+</ul>
+<ul class="nav navbar-nav navbar-right">
+</ul>
+</div><!--/.nav-collapse-->
+</div><!--/.container-->
+</div><!--/.navbar-->
 
+<script type="text/javascript">
+
+
+var FlexDashboard = (function () {
+
+  // initialize options
+  var _options = {};
+
+  var FlexDashboard = function() {
+
+    // default options
+    _options = $.extend(_options, {
+      theme: "cosmo",
+      fillPage: false,
+      orientation: 'columns',
+      storyboard: false,
+      defaultFigWidth: 576,
+      defaultFigHeight: 461,
+      defaultFigWidthMobile: 360,
+      defaultFigHeightMobile: 461,
+      isMobile: false,
+      isPortrait: false,
+      resize_reload: true
+    });
+  };
+
+  function init(options) {
+
+    // extend default options
+    $.extend(true, _options, options);
+
+    // add ids to sections that don't have them (pandoc won't assign ids
+    // to e.g. sections with titles consisting of only chinese characters)
+    var nextId = 1;
+    $('.level1:not([id]),.level2:not([id]),.level3:not([id])').each(function() {
+      $(this).attr('id', 'dashboard-' + nextId++);
+    });
+
+    // find navbar items
+    var navbarItems = $('#flexdashboard-navbar');
+    if (navbarItems.length)
+      navbarItems = JSON.parse(navbarItems.html());
+    addNavbarItems(navbarItems);
+
+    // find the main dashboard container
+    var dashboardContainer = $('#dashboard-container');
+
+    // resolve mobile classes
+    resolveMobileClasses(dashboardContainer);
+
+    // one time global initialization for components
+    componentsInit(dashboardContainer);
+
+    // look for a global sidebar
+    var globalSidebar = dashboardContainer.find(".section.level1.sidebar");
+    if (globalSidebar.length > 0) {
+
+      // global layout for fullscreen displays
+      if (!isMobilePhone()) {
+
+         // hoist it up to the top level
+         globalSidebar.insertBefore(dashboardContainer);
+
+         // lay it out (set width/positions)
+         layoutSidebar(globalSidebar, dashboardContainer);
+
+      // tuck sidebar into first page for mobile phones
+      } else {
+
+        // convert it into a level3 section
+        globalSidebar.removeClass('sidebar');
+        globalSidebar.removeClass('level1');
+        globalSidebar.addClass('level3');
+        var h1 = globalSidebar.children('h1');
+        var h3 = $('<h3></h3>');
+        h3.append(h1.contents());
+        h3.insertBefore(h1);
+        h1.detach();
+
+        // move it into the first page
+        var page = dashboardContainer.find('.section.level1').first();
+        if (page.length > 0)
+          page.prepend(globalSidebar);
+      }
+    }
+
+    // look for pages to layout
+    var pages = $('div.section.level1');
+    if (pages.length > 0) {
+
+        // find the navbar and collapse on clicked
+        var navbar = $('#navbar');
+        navbar.on("click", "a[data-toggle!=dropdown]", null, function () {
+           navbar.collapse('hide');
+        });
+
+        // envelop the dashboard container in a tab content div
+        dashboardContainer.wrapInner('<div class="tab-content"></div>');
+
+        pages.each(function(index) {
+
+          // lay it out
+          layoutDashboardPage($(this));
+
+          // add it to the navbar
+          addToNavbar($(this), index === 0);
+
+        });
+
+    } else {
+
+      // remove the navbar and navbar button if we don't
+      // have any navbuttons
+      if (navbarItems.length === 0) {
+        $('#navbar').remove();
+        $('#navbar-button').remove();
+      }
+
+      // add the storyboard class if requested
+      if (_options.storyboard)
+        dashboardContainer.addClass('storyboard');
+
+      // layout the entire page
+      layoutDashboardPage(dashboardContainer);
+    }
+
+    // if we are in shiny we need to trigger a window resize event to
+    // force correct layout of shiny-bound-output elements
+    if (isShinyDoc())
+      $(window).trigger('resize');
+
+    // make main components visible
+    $('.section.sidebar').css('visibility', 'visible');
+    dashboardContainer.css('visibility', 'visible');
+
+    // handle location hash
+    handleLocationHash();
+
+    // intialize prism highlighting
+    initPrismHighlighting();
+
+    // record mobile and orientation state then register a handler
+    // to refresh if resize_reload is set to true and it changes
+    _options.isMobile = isMobilePhone();
+    _options.isPortrait = isPortrait();
+    if (_options.resize_reload) {
+      $(window).on('resize', function() {
+        if (_options.isMobile !== isMobilePhone() ||
+            _options.isPortrait !== isPortrait()) {
+          window.location.reload();
+        }
+      });
+    } else {
+      // if in desktop mode and resizing to mobile, make sure the heights are 100%
+      // This enforces what `fillpage.css` does for "wider" pages.
+      // Since we are not reloading once the page becomes small, we need to force the height to 100%
+      // This is a new situation introduced when `_options.resize_reload` is `false`
+      if (! _options.isMobile) {
+        // only add if `fillpage.css` was added in the first place
+        if (_options.fillPage) {
+          // fillpage.css
+          $("html,body,#dashboard").css("height", "100%");
+        }
+      }
+    }
+    // trigger layoutcomplete event
+    dashboardContainer.trigger('flexdashboard:layoutcomplete');
+  }
+
+  function resolveMobileClasses(dashboardContainer) {
+     // add top level layout class
+    dashboardContainer.addClass(isMobilePhone() ? 'mobile-layout' :
+                                                  'desktop-layout');
+
+    // look for .mobile sections and add .no-mobile to their peers
+    var mobileSections = $('.section.mobile');
+    mobileSections.each(function() {
+       var id = $(this).attr('id');
+       var nomobileId = id.replace(/-\d+$/, '');
+       $('#' + nomobileId).addClass('no-mobile');
+    });
+  }
+
+  function addNavbarItems(navbarItems) {
+
+    var navbarLeft = $('ul.navbar-left');
+    var navbarRight = $('ul.navbar-right');
+
+    for (var i = 0; i<navbarItems.length; i++) {
+
+      // get the item
+      var item = navbarItems[i];
+
+      // determine the container
+      var container = null;
+      if (item.align === "left")
+        container = navbarLeft;
+      else
+        container = navbarRight;
+
+      // navbar menu if we have multiple items
+      if (item.items) {
+        var menu = navbarMenu(null, item.icon, item.title, container);
+        for (var j = 0; j<item.items.length; j++) {
+          var subItem = item.items[j];
+          var li = $('<li></li>');
+          li.append(navbarLink(subItem.icon, subItem.title, subItem.href, subItem.target));
+          menu.append(li);
+        }
+      } else {
+        var li = $('<li></li>');
+        li.append(navbarLink(item.icon, item.title, item.href, item.target));
+        container.append(li);
+      }
+    }
+  }
+
+  // create or get a reference to an existing dropdown menu
+  function navbarMenu(id, icon, title, container) {
+    var existingMenu = [];
+    if (id)
+      existingMenu = container.children('#' + id);
+    if (existingMenu.length > 0) {
+      return existingMenu.children('ul');
+    } else {
+      var li = $('<li></li>');
+      if (id)
+        li.attr('id', id);
+      li.addClass('dropdown');
+      // auto add "Share" title on mobile if necessary
+      if (!title && icon && (icon === "fa-share-alt") && isMobilePhone())
+        title = "Share";
+      if (title) {
+        title = title + ' <span class="caret"></span>';
+      }
+      var a = navbarLink(icon, title, "#");
+      a.addClass('dropdown-toggle');
+      a.attr('data-toggle', 'dropdown');
+      a.attr('role', 'button');
+      a.attr('aria-expanded', 'false');
+      li.append(a);
+      var ul = $('<ul class="dropdown-menu"></ul>');
+      ul.attr('role', 'menu');
+      li.append(ul);
+      container.append(li);
+      return ul;
+    }
+  }
+
+  function addToNavbar(page, active) {
+
+    // capture the id and data-icon attribute (if any)
+    var id = page.attr('id');
+    var icon = page.attr('data-icon');
+    var navmenu = page.attr('data-navmenu');
+
+    // get hidden state (transfer this to navbar)
+    var hidden = page.hasClass('hidden');
+    page.removeClass('hidden');
+
+    // sanitize the id for use with bootstrap tabs
+    id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
+    page.attr('id', id);
+
+    // get the wrapper
+    var wrapper = page.closest('.dashboard-page-wrapper');
+
+    // move the id to the wrapper
+    page.removeAttr('id');
+    wrapper.attr('id', id);
+
+    // add the tab-pane class to the wrapper
+    wrapper.addClass('tab-pane');
+    if (active)
+      wrapper.addClass('active');
+
+    // get a reference to the h1, discover its inner contens, then detach it
+    var h1 = wrapper.find('h1').first();
+    var title = h1.contents();
+    h1.detach();
+
+    // create a navbar item
+    var li = $('<li></li>');
+    var a = navbarLink(icon, title, '#' + id);
+    a.attr('data-toggle', 'tab');
+    li.append(a);
+
+    // add it to the navbar (or navbar menu if specified)
+    var container = $('ul.navbar-left');
+    if (navmenu) {
+      var menuId = navmenu.replace(/\s+/g, '');
+      var menu = navbarMenu(menuId, null, navmenu, container);
+      menu.append(li);
+    } else {
+      container.append(li);
+    }
+
+    // hide it if requested
+    if (hidden)
+      li.addClass('hidden');
+  }
+
+  function navbarLink(icon, title, href, target) {
+
+    var a = $('<a></a>');
+    if (icon) {
+
+      // get the name of the icon set and icon
+      var dashPos = icon.indexOf("-");
+      var iconSet = null;
+      var iconSplit = icon.split(" ");
+      if (iconSplit.length > 1) {
+        iconSet = iconSplit[0];
+        icon = iconSplit.slice(1).join(" ");
+      } else {
+        iconSet = icon.substring(0, dashPos);
+      }
+      var iconName = icon.substring(dashPos + 1);
+
+      // create the icon
+      var iconElement = $('<span class="' + iconSet + ' ' + icon + '"></span>');
+      if (title)
+        iconElement.css('margin-right', '7px');
+      a.append(iconElement);
+      // if href is null see if we can auto-generate based on icon (e.g. social)
+      if (!href)
+        maybeGenerateLinkFromIcon(iconName, a);
+    }
+    if (title)
+      a.append(title);
+
+    // add the href.
+    if (href) {
+      if (href === "source_embed") {
+        a.attr('href', '#');
+        a.attr('data-featherlight', "#flexdashboard-source-code");
+        a.featherlight({
+            beforeOpen: function(event){
+              $('body').addClass('unselectable');
+            },
+            afterClose: function(event){
+              $('body').removeClass('unselectable');
+            }
+        });
+      } else {
+        a.attr('href', href);
+      }
+    }
+
+    // add the arget
+    if (target)
+      a.attr('target', target);
+
+    return a;
+  }
+
+  // auto generate a link from an icon name (e.g. twitter) when possible
+  function maybeGenerateLinkFromIcon(iconName, a) {
+
+     var serviceLinks = {
+      "twitter": "https://twitter.com/share?text=" + encodeURIComponent(document.title) + "&url="+encodeURIComponent(location.href),
+      "facebook": "https://www.facebook.com/sharer/sharer.php?s=100&p[url]="+encodeURIComponent(location.href),
+      "google-plus": "https://plus.google.com/share?url="+encodeURIComponent(location.href),
+      "linkedin": "https://www.linkedin.com/shareArticle?mini=true&url="+encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title),
+      "pinterest": "https://pinterest.com/pin/create/link/?url="+encodeURIComponent(location.href) + "&description=" + encodeURIComponent(document.title)
+    };
+
+    var makeSocialLink = function(a, href) {
+      a.attr('href', '#');
+      a.on('click', function(e) {
+        e.preventDefault();
+        window.open(href);
+      });
+    };
+
+    $.each(serviceLinks, function(key, value) {
+      if (iconName.indexOf(key) !== -1)
+        makeSocialLink(a, value);
+    });
+  }
+
+  // layout a dashboard page
+  function layoutDashboardPage(page) {
+
+    // use a page wrapper so that free form content above the
+    // dashboard appears at the top rather than the side (as it
+    // would without the wrapper in a column orientation)
+    var wrapper = $('<div class="dashboard-page-wrapper"></div>');
+    page.wrap(wrapper);
+
+    // if there are no level2 or level3 headers synthesize a level3
+    // header to contain the (e.g. frame it, scroll container, etc.)
+    var headers = page.find('h2,h3');
+    if (headers.length === 0)
+      page.wrapInner('<div class="section level3"></div>');
+
+    // hoist up any content before level 2 or level 3 headers
+    var children = page.children();
+    children.each(function(index) {
+      if ($(this).hasClass('level2') || $(this).hasClass('level3'))
+        return false;
+      $(this).insertBefore(page);
+    });
+
+    // determine orientation and fillPage behavior for distinct media
+    var orientation, fillPage, storyboard;
+
+    // media: mobile phone
+    if (isMobilePhone()) {
+
+      // if there is a sidebar we need to ensure it's content
+      // is properly framed as an h3
+      var sidebar = page.find('.section.sidebar');
+      sidebar.removeClass('sidebar');
+      sidebar.wrapInner('<div class="section level3"></div>');
+      var h2 = sidebar.find('h2');
+      var h3 = $('<h3></h3>');
+      h3.append(h2.contents());
+      h3.insertBefore(h2);
+      h2.detach();
+
+      // wipeout h2 elements then enclose them in a single h2
+      var level2 = page.find('div.section.level2');
+      level2.each(function() {
+        level2.children('h2').remove();
+        level2.children().unwrap();
+      });
+      page.wrapInner('<div class="section level2"></div>');
+
+      // substitute mobile images
+      if (isPortrait()) {
+        var mobileFigures = $('img.mobile-figure');
+        mobileFigures.each(function() {
+          // get the src (might be base64 encoded)
+          var src = $(this).attr('src');
+
+          // find it's peer
+          var id = $(this).attr('data-mobile-figure-id');
+          var img = $('img[data-figure-id=' + id + "]");
+          img.attr('src', src)
+             .attr('width', _options.defaultFigWidthMobile)
+             .attr('height', _options.defaultFigHeightMobile);
+        });
+      }
+
+      // hoist storyboard commentary into it's own section
+      if (page.hasClass('storyboard')) {
+        var commentaryHR = page.find('div.section.level3 hr');
+        commentaryHR.each(function() {
+          var commentary = $(this).nextAll().detach();
+          var commentarySection = $('<div class="section level3"></div>');
+          commentarySection.append(commentary);
+          commentarySection.insertAfter($(this).closest('div.section.level3'));
+          $(this).remove();
+        });
+      }
+
+      // force a non full screen layout by columns
+      orientation = _options.orientation = 'columns';
+      fillPage = _options.fillPage = false;
+      storyboard = _options.storyboard = false;
+
+    // media: desktop
+    } else {
+
+      // determine orientation
+      orientation = page.attr('data-orientation');
+      if (orientation !== 'rows' && orientation != 'columns')
+        orientation = _options.orientation;
+
+      // determine storyboard mode
+      storyboard = page.hasClass('storyboard');
+
+      // fillPage based on options (force for storyboard)
+      fillPage = _options.fillPage || storyboard;
+
+      // handle sidebar
+      var sidebar = page.find('.section.level2.sidebar');
+      if (sidebar.length > 0)
+        layoutSidebar(sidebar, page);
+    }
+
+    // give it and it's parent divs height: 100% if we are in fillPage mode
+    if (fillPage) {
+      page.addClass('vertical-layout-fill');
+      page.css('height', '100%');
+      page.parents('div').css('height', '100%');
+    } else {
+      page.addClass('vertical-layout-scroll');
+    }
+
+    // perform the layout
+    if (storyboard)
+      layoutPageAsStoryboard(page);
+    else if (orientation === 'rows')
+      layoutPageByRows(page, fillPage);
+    else if (orientation === 'columns')
+      layoutPageByColumns(page, fillPage);
+  }
+
+  function layoutSidebar(sidebar, content) {
+
+    // get it out of the header hierarchy
+    sidebar = sidebar.first();
+    if (sidebar.hasClass('level1')) {
+      sidebar.removeClass('level1');
+      sidebar.children('h1').remove();
+    } else if (sidebar.hasClass('level2')) {
+      sidebar.removeClass('level2');
+      sidebar.children('h2').remove();
+    }
+
+    // determine width
+    var sidebarWidth = isTablet() ? 220 : 250;
+    var dataWidth = parseInt(sidebar.attr('data-width'));
+    if (dataWidth)
+      sidebarWidth = dataWidth;
+
+    // set the width and shift the page right to accomodate the sidebar
+    sidebar.css('width', sidebarWidth + 'px');
+    content.css('padding-left', sidebarWidth + 'px');
+
+    // wrap it's contents in a form
+    sidebar.wrapInner($('<form></form>'));
+  }
+
+  function layoutPageAsStoryboard(page) {
+
+    // create storyboard navigation
+    var nav = $('<div class="storyboard-nav"></div>');
+
+    // add navigation buttons
+    var prev = $('<button class="sbprev"><i class="fa fa-angle-left"></i></button>');
+    nav.append(prev);
+    var next= $('<button class="sbnext"><i class="fa fa-angle-right"></i></button>');
+    nav.append(next);
+
+    // add navigation frame
+    var frameList = $('<div class="sbframelist"></div>');
+    nav.append(frameList);
+    var ul = $('<ul></ul>');
+    frameList.append(ul);
+
+     // find all the level3 sections (those are the storyboard frames)
+    var frames = page.find('div.section.level3');
+    frames.each(function() {
+
+      // mark it
+      $(this).addClass('sbframe');
+
+      // divide it into chart content and (optional) commentary
+      $(this).addClass('dashboard-column-orientation');
+
+      // stuff the chart into it's own div w/ flex
+      $(this).wrapInner('<div class="sbframe-component"></div>');
+      setFlex($(this), 1);
+      var frame = $(this).children('.sbframe-component');
+
+      // extract the title from the h3
+      var li = $('<li></li>');
+      var h3 = frame.children('h3');
+      li.append(h3.contents());
+      h3.detach();
+      ul.append(li);
+
+      // extract commentary
+      var hr = frame.children('hr');
+      if (hr.length) {
+        var commentary = hr.nextAll().detach();
+        hr.remove();
+        var commentaryFrame = $('<div class="sbframe-commentary"></div>');
+        commentaryFrame.addClass('flowing-content-shim');
+        commentaryFrame.addClass('flowing-content-container');
+        commentaryFrame.append(commentary);
+        $(this).append(commentaryFrame);
+
+        // look for a data-commentary-width attribute
+        var commentaryWidth = $(this).attr('data-commentary-width');
+        if (commentaryWidth)
+          commentaryFrame.css('width', commentaryWidth + 'px');
+      }
+
+      // layout the chart (force flex)
+      var result = layoutChart(frame, true);
+
+      // ice the notes if there are none
+      if (!result.notes)
+        frame.find('.chart-notes').remove();
+
+      // set flex on chart
+      setFlex(frame, 1);
+    });
+
+    // create a div to hold all the frames
+    var frameContent = $('<div class="sbframe-content"></div>');
+    frameContent.addClass('dashboard-row-orientation');
+    frameContent.append(frames.detach());
+
+    // row orientation to stack nav and frame content
+    page.addClass('dashboard-row-orientation');
+    page.append(nav);
+    page.append(frameContent);
+    setFlex(frameContent, 1);
+
+    // initialize sly
+    var sly = new Sly(frameList, {
+    		horizontal: true,
+    		itemNav: 'basic',
+    		smart: true,
+    		activateOn: 'click',
+    		startAt: 0,
+    		scrollBy: 1,
+    		activatePageOn: 'click',
+    		speed: 200,
+    		moveBy: 600,
+    		dragHandle: true,
+    		dynamicHandle: true,
+    		clickBar: true,
+    		keyboardNavBy: 'items',
+    		next: next,
+    		prev: prev
+    	}).init();
+
+    // make first frame active
+    frames.removeClass('active');
+    frames.first().addClass('active');
+
+    // subscribe to frame changed events
+    sly.on('active', function (eventName, itemIndex) {
+      frames.removeClass('active');
+      frames.eq(itemIndex).addClass('active')
+                          .trigger('shown');
+    });
+  }
+
+  function layoutPageByRows(page, fillPage) {
+
+    // row orientation
+    page.addClass('dashboard-row-orientation');
+
+    // find all the level2 sections (those are the rows)
+    var rows = page.find('div.section.level2');
+
+    // if there are no level2 sections then treat the
+    // entire page as if it's a level 2 section
+    if (rows.length === 0) {
+      page.wrapInner('<div class="section level2"></div>');
+      rows = page.find('div.section.level2');
+    }
+
+    rows.each(function () {
+
+      // flags
+      var haveNotes = false;
+      var haveFlexHeight = true;
+
+      // remove the h2
+      $(this).children('h2').remove();
+
+      // check for a tabset
+      var isTabset = $(this).hasClass('tabset');
+      if (isTabset)
+        layoutTabset($(this));
+
+      // give it row layout semantics if it's not a tabset
+      if (!isTabset)
+        $(this).addClass('dashboard-row');
+
+      // find all of the level 3 subheads
+      var columns = $(this).find('div.section.level3');
+
+      // determine figureSizes sizes
+      var figureSizes = chartFigureSizes(columns);
+
+      // fixup the columns
+      columns.each(function(index) {
+
+        // layout the chart (force flex if we are in a tabset)
+        var result = layoutChart($(this), isTabset);
+
+        // update flexHeight state
+        if (!result.flex)
+          haveFlexHeight = false;
+
+        // update state
+        if (result.notes)
+          haveNotes = true;
+
+        // set the column flex based on the figure width
+        // (value boxes will just get the default figure width)
+        var chartWidth = figureSizes[index].width;
+        setFlex($(this), chartWidth + ' ' + chartWidth + ' 0px');
+
+      });
+
+      // remove empty chart note divs
+      if (isTabset)
+        $(this).find('.chart-notes').filter(function() {
+            return $(this).html() === "&nbsp;";
+        }).remove();
+      if (!haveNotes)
+        $(this).find('.chart-notes').remove();
+
+       // make it a flexbox row
+      if (haveFlexHeight)
+        $(this).addClass('dashboard-row-flex');
+
+      // now we can set the height on all the wrappers (based on maximum
+      // figure height + room for title and notes, or data-height on the
+      // container if specified). However, don't do this if there is
+      // no flex on any of the constituent columns
+      var flexHeight = null;
+      var dataHeight = parseInt($(this).attr('data-height'));
+      if (dataHeight)
+        flexHeight = adjustedHeight(dataHeight, columns.first());
+      else if (haveFlexHeight)
+        flexHeight = maxChartHeight(figureSizes, columns);
+      if (flexHeight) {
+        if (fillPage)
+          setFlex($(this), flexHeight + ' ' + flexHeight + ' 0px');
+        else {
+          $(this).css('height', flexHeight + 'px');
+          setFlex($(this), '0 0 ' + flexHeight + 'px');
+        }
+      }
+
+    });
+  }
+
+  function layoutPageByColumns(page, fillPage) {
+
+    // column orientation
+    page.addClass('dashboard-column-orientation');
+
+    // find all the level2 sections (those are the columns)
+    var columns = page.find('div.section.level2');
+
+    // if there are no level2 sections then treat the
+    // entire page as if it's a level 2 section
+    if (columns.length === 0) {
+      page.wrapInner('<div class="section level2"></div>');
+      columns = page.find('div.section.level2');
+    }
+
+    // layout each column
+    columns.each(function (index) {
+
+      // remove the h2
+      $(this).children('h2').remove();
+
+      // make it a flexbox column
+      $(this).addClass('dashboard-column');
+
+      // check for a tabset
+      var isTabset = $(this).hasClass('tabset');
+      if (isTabset)
+        layoutTabset($(this));
+
+      // find all the h3 elements
+      var rows = $(this).find('div.section.level3');
+
+      // get the figure sizes for the rows
+      var figureSizes = chartFigureSizes(rows);
+
+      // column flex is the max row width (or data-width if specified)
+      var flexWidth;
+      var dataWidth = parseInt($(this).attr('data-width'));
+      if (dataWidth)
+        flexWidth = dataWidth;
+      else
+        flexWidth = maxChartWidth(figureSizes);
+      setFlex($(this), flexWidth + ' ' + flexWidth + ' 0px');
+
+      // layout each chart
+      rows.each(function(index) {
+
+        // perform the layout
+        var result = layoutChart($(this), false);
+
+        // ice the notes if there are none
+        if (!result.notes)
+          $(this).find('.chart-notes').remove();
+
+        // set flex height based on figHeight, then adjust
+        if (result.flex) {
+          var chartHeight = figureSizes[index].height;
+          chartHeight = adjustedHeight(chartHeight, $(this));
+          if (fillPage)
+            setFlex($(this), chartHeight + ' ' + chartHeight + ' 0px');
+          else {
+            $(this).css('height', chartHeight + 'px');
+            setFlex($(this), chartHeight + ' ' + chartHeight + ' ' + chartHeight + 'px');
+          }
+        }
+      });
+    });
+  }
+
+  function chartFigureSizes(charts) {
+
+    // sizes
+    var figureSizes = new Array(charts.length);
+
+    // check each chart
+    charts.each(function(index) {
+
+      // start with default
+      figureSizes[index] = {
+        width: _options.defaultFigWidth,
+        height: _options.defaultFigHeight
+      };
+
+      // look for data-height or data-width then knit options
+      var dataWidth = parseInt($(this).attr('data-width'));
+      var dataHeight = parseInt($(this).attr('data-height'));
+      var knitrOptions = $(this).find('.knitr-options:first');
+      var knitrWidth, knitrHeight;
+      if (knitrOptions) {
+        knitrWidth = parseInt(knitrOptions.attr('data-fig-width'));
+        knitrHeight =  parseInt(knitrOptions.attr('data-fig-height'));
+      }
+
+      // width
+      if (dataWidth)
+        figureSizes[index].width = dataWidth;
+      else if (knitrWidth)
+        figureSizes[index].width = knitrWidth;
+
+      // height
+      if (dataHeight)
+        figureSizes[index].height = dataHeight;
+      else if (knitrHeight)
+        figureSizes[index].height = knitrHeight;
+    });
+
+    // return sizes
+    return figureSizes;
+  }
+
+  function maxChartHeight(figureSizes, charts) {
+
+    // first compute the maximum height
+    var maxHeight = _options.defaultFigHeight;
+    for (var i = 0; i<figureSizes.length; i++)
+      if (figureSizes[i].height > maxHeight)
+        maxHeight = figureSizes[i].height;
+
+    // now add offests for chart title and chart notes
+    if (charts.length)
+      maxHeight = adjustedHeight(maxHeight, charts.first());
+
+    return maxHeight;
+  }
+
+  function adjustedHeight(height, chart) {
+    if (chart.length > 0) {
+      var chartTitle = chart.find('.chart-title');
+      if (chartTitle.length)
+        height += chartTitle.first().outerHeight();
+      var chartNotes = chart.find('.chart-notes');
+      if (chartNotes.length)
+        height += chartNotes.first().outerHeight();
+    }
+    return height;
+  }
+
+  function maxChartWidth(figureSizes) {
+    var maxWidth = _options.defaultFigWidth;
+    for (var i = 0; i<figureSizes.length; i++)
+      if (figureSizes[i].width > maxWidth)
+        maxWidth = figureSizes[i].width;
+    return maxWidth;
+  }
+
+  // layout a chart
+  function layoutChart(chart, forceFlex) {
+
+    // state to return
+    var result = {
+      notes: false,
+      flex: false
+    };
+
+    // extract the title
+    var title = extractTitle(chart);
+
+    // find components that apply to this container
+    var components = componentsFind(chart);
+
+    // if it's a custom component then call it and return
+    var customComponents = componentsCustom(components);
+    if (customComponents.length) {
+      componentsLayout(customComponents, title, chart);
+      result.notes = false;
+      result.flex = forceFlex || componentsFlex(customComponents);
+      return result;
+    }
+
+    // put all the content in a chart wrapper div
+    chart.addClass('chart-wrapper');
+    chart.wrapInner('<div class="chart-stage"></div>');
+    var chartContent = chart.children('.chart-stage');
+
+    // flex the content if appropriate
+    result.flex = forceFlex || componentsFlex(components);
+    if (result.flex) {
+      // add flex classes
+      chart.addClass('chart-wrapper-flex');
+      chartContent.addClass('chart-stage-flex');
+
+      // additional shim to break out of flexbox sizing
+      chartContent.wrapInner('<div class="chart-shim"></div>');
+      chartContent = chartContent.children('.chart-shim');
+    }
+
+    // set custom data-padding attribute
+    var pad = chart.attr('data-padding');
+    if (pad) {
+      if (pad === "0")
+        chart.addClass('no-padding');
+      else {
+        pad = pad + 'px';
+        chartContent.css('left', pad)
+                    .css('top', pad)
+                    .css('right', pad)
+                    .css('bottom', pad)
+      }
+    }
+
+    // call compoents
+    componentsLayout(components, title, chartContent);
+
+    // also activate components on shiny output
+    findShinyOutput(chartContent).on('shiny:value',
+      function(event) {
+        var element = $(event.target);
+        setTimeout(function() {
+
+          // see if we opted out of flex based on our output (for shiny
+          // we can't tell what type of output we have until after the
+          // value is bound)
+          var components = componentsFind(element);
+          var flex = forceFlex || componentsFlex(components);
+          if (!flex) {
+            chart.css('height', "");
+            setFlex(chart, "");
+            chart.removeClass('chart-wrapper-flex');
+            chartContent.removeClass('chart-stage-flex');
+            chartContent.children().unwrap();
+          }
+
+          // perform layout
+          componentsLayout(components, title, element.parent());
+        }, 10);
+      });
+
+    // add the title
+    var chartTitle = $('<div class="chart-title"></div>');
+    chartTitle.append(title);
+    chart.prepend(chartTitle);
+
+    // add the notes section
+    var chartNotes = $('<div class="chart-notes"></div>');
+    chartNotes.html('&nbsp;');
+    chart.append(chartNotes);
+
+    // attempt to extract notes if we have a component
+    if (components.length)
+      result.notes = extractChartNotes(chartContent, chartNotes);
+
+    // return result
+    return result;
+  }
+
+  // build a tabset from a section div with the .tabset class
+  function layoutTabset(tabset) {
+
+    // check for fade option
+    var fade = tabset.hasClass("tabset-fade");
+    var navClass = "nav-tabs";
+
+    // determine the heading level of the tabset and tabs
+    var match = tabset.attr('class').match(/level(\d) /);
+    if (match === null)
+      return;
+    var tabsetLevel = Number(match[1]);
+    var tabLevel = tabsetLevel + 1;
+
+    // find all subheadings immediately below
+    var tabs = tabset.find("div.section.level" + tabLevel);
+    if (!tabs.length)
+      return;
+
+    // create tablist and tab-content elements
+    var tabList = $('<ul class="nav ' + navClass + '" role="tablist"></ul>');
+    $(tabs[0]).before(tabList);
+    var tabContent = $('<div class="tab-content"></div>');
+    $(tabs[0]).before(tabContent);
+
+    // build the tabset
+    tabs.each(function(i) {
+
+      // get the tab div
+      var tab = $(tabs[i]);
+
+      // get the id then sanitize it for use with bootstrap tabs
+      var id = tab.attr('id');
+
+      // sanitize the id for use with bootstrap tabs
+      id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
+      tab.attr('id', id);
+
+      // get the heading element within it and grab it's text
+      var heading = tab.find('h' + tabLevel + ':first');
+      var headingDom = heading.contents();
+
+      // build and append the tab list item
+      var a = $('<a role="tab" data-toggle="tab"></a>');
+      a.append(headingDom);
+      a.attr('href', '#' + id);
+      a.attr('aria-controls', id);
+      var li = $('<li role="presentation"></li>');
+      li.append(a);
+      if (i === 0)
+        li.attr('class', 'active');
+      tabList.append(li);
+
+      // set it's attributes
+      tab.attr('role', 'tabpanel');
+      tab.addClass('tab-pane');
+      tab.addClass('tabbed-pane');
+      tab.addClass('no-title');
+      if (fade)
+        tab.addClass('fade');
+      if (i === 0) {
+        tab.addClass('active');
+        if (fade)
+          tab.addClass('in');
+      }
+
+      // move it into the tab content div
+      tab.detach().appendTo(tabContent);
+    });
+
+    // add nav-tabs-custom
+    tabset.addClass('nav-tabs-custom');
+
+    // internal layout is dashboard-column with tab-content flexing
+    tabset.addClass('dashboard-column');
+    setFlex(tabContent, 1);
+  }
+
+  // one time global initialization for components
+  function componentsInit(dashboardContainer) {
+    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
+      var component = window.FlexDashboardComponents[i];
+      if (component.init)
+        component.init(dashboardContainer);
+    }
+  }
+
+  // find components that apply within a container
+  function componentsFind(container) {
+
+    // look for components
+    var components = [];
+    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
+      var component = window.FlexDashboardComponents[i];
+      if (component.find(container).length)
+        components.push(component);
+    }
+
+    // if there were none then use a special flowing content component
+    // that just adds a scrollbar in fillPage mode
+    if (components.length == 0) {
+      components.push({
+        find: function(container) {
+          return container;
+        },
+
+        flex: function(fillPage) {
+          return fillPage;
+        },
+
+        layout: function(title, container, element, fillPage) {
+          if (fillPage) {
+            container.addClass('flowing-content-shim');
+            container.addClass('flowing-content-container');
+          }
+        }
+      });
+    }
+
+    return components;
+  }
+
+  // if there is a custom component then pick it out
+  function componentsCustom(components) {
+    var customComponent = [];
+    for (var i=0; i<components.length; i++)
+      if (components[i].type === "custom") {
+        customComponent.push(components[i]);
+        break;
+      }
+    return customComponent;
+  }
+
+  // query all components for flex
+  function componentsFlex(components) {
+
+    // no components at all means no flex
+    if (components.length === 0)
+      return false;
+
+    // otherwise query components (assume true unless we see false)
+    var isMobile = isMobilePhone();
+    for (var i=0; i<components.length; i++)
+      if (components[i].flex && !components[i].flex(_options.fillPage))
+        return false;
+    return true;
+  }
+
+  // layout all components
+  function componentsLayout(components, title, container) {
+    var isMobile = isMobilePhone();
+    for (var i=0; i<components.length; i++) {
+      var element = components[i].find(container);
+      if (components[i].layout) {
+        // call layout (don't call other components if it returns false)
+        var result = components[i].layout(title, container, element, _options.fillPage);
+        if (result === false)
+          return;
+      }
+    }
+  }
+
+  // get a reference to the h3, discover it's inner html, and remove it
+  function extractTitle(container) {
+    var h3 = container.children('h3').first();
+    var title = '';
+    if (!container.hasClass('no-title'))
+      title = h3.contents();
+    h3.detach();
+    return title;
+  }
+
+  // extract chart notes
+  function extractChartNotes(chartContent, chartNotes) {
+    // look for a terminating blockquote or image caption
+    var blockquote = chartContent.children('blockquote:last-child');
+    var caption = chartContent.children('div.image-container')
+                              .children('p.caption');
+    if (blockquote.length) {
+      chartNotes.empty().append(blockquote.children('p:first-child').contents());
+      blockquote.remove();
+      return true;
+    } else if (caption.length) {
+      chartNotes.empty().append(caption.contents());
+      caption.remove();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function findShinyOutput(chartContent) {
+    return chartContent.find('.shiny-text-output, .shiny-html-output');
+  }
+
+  // safely detect rendering on a mobile phone
+  function isMobilePhone() {
+    try
+    {
+      return ! window.matchMedia("only screen and (min-width: 768px)").matches;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
+  function isFillPage() {
+    return _options.fillPage;
+  }
+
+  // detect portrait mode
+  function isPortrait() {
+    return ($(window).width() < $(window).height());
+  }
+
+  // safely detect rendering on a tablet
+  function isTablet() {
+    try
+    {
+      return window.matchMedia("only screen and (min-width: 769px) and (max-width: 992px)").matches;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
+  // test whether this is a shiny doc
+  function isShinyDoc() {
+    return (typeof(window.Shiny) !== "undefined" && !!window.Shiny.outputBindings);
+  }
+
+  // set flex using vendor specific prefixes
+  function setFlex(el, flex) {
+    el.css('-webkit-box-flex', flex)
+      .css('-webkit-flex', flex)
+      .css('-ms-flex', flex)
+      .css('flex', flex);
+  }
+
+  // support bookmarking of pages
+  function handleLocationHash() {
+
+    // restore tab/page from bookmark
+    var hash = window.decodeURIComponent(window.location.hash);
+    if (hash.length > 0)
+      $('ul.nav a[href="' + hash + '"]').tab('show');
+    FlexDashboardUtils.manageActiveNavbarMenu();
+
+    // navigate to a tab when the history changes
+    window.addEventListener("popstate", function(e) {
+      var hash = window.decodeURIComponent(window.location.hash);
+      var activeTab = $('ul.nav a[href="' + hash + '"]');
+      if (activeTab.length) {
+        activeTab.tab('show');
+      } else {
+        $('ul.nav a:first').tab('show');
+      }
+      FlexDashboardUtils.manageActiveNavbarMenu();
+    });
+
+    // add a hash to the URL when the user clicks on a tab/page
+    $('.navbar-nav a[data-toggle="tab"]').on('click', function(e) {
+      var baseUrl = FlexDashboardUtils.urlWithoutHash(window.location.href);
+      var hash = FlexDashboardUtils.urlHash($(this).attr('href'));
+      var href = baseUrl + hash;
+      FlexDashboardUtils.setLocation(href);
+    });
+
+    // handle clicks of other links that should activate pages
+    var navPages = $('ul.navbar-nav li a[data-toggle=tab]');
+    navPages.each(function() {
+      var href =  $(this).attr('href');
+      var links = $('a[href="' + href + '"][data-toggle!=tab]');
+      links.each(function() {
+        $(this).on('click', function(e) {
+          window.FlexDashboardUtils.showPage(href);
+        });
+      });
+    });
+  }
+
+  // tweak Prism highlighting
+  function initPrismHighlighting() {
+
+    if (window.Prism) {
+      Prism.languages.insertBefore('r', 'comment', {
+        'heading': [
+          {
+            // title 1
+        	  // =======
+
+        	  // title 2
+        	  // -------
+        	  pattern: /\w+.*(?:\r?\n|\r)(?:====+|----+)/,
+            alias: 'operator'
+          },
+          {
+            // ### title 3
+            pattern: /(^\s*)###[^#].+/m,
+            lookbehind: true,
+            alias: 'operator'
+          }
+        ]
+      });
+
+      // prism highlight
+      Prism.highlightAll();
+    }
+  }
+
+
+  // get theme color
+  var themeColors = {
+    bootstrap: {
+      primary: "rgba(51, 122, 183, 0.4)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    cerulean: {
+      primary: "rgb(47, 164, 231)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    journal: {
+      primary: "rgba(235, 104, 100, 0.70)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    flatly: {
+      primary: "rgba(44, 62, 80, 0.70)",
+      info: "rgba(52, 152, 219, 0.70)",
+      success: "rgba(24, 188, 156, 0.70)",
+      warning: "rgba(243, 156, 18, 0.70)",
+      danger: "rgba(231, 76, 60, 0.70)"
+    },
+    readable: {
+      primary: "rgba(69, 130, 236, 0.4)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    spacelab: {
+      primary: "rgba(68, 110, 155, 0.25)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    united: {
+      primary: "rgba(221, 72, 20, 0.30)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    cosmo: {
+      primary: "rgba(39, 128, 227, 0.7)",
+      info: "rgba(153, 84, 187, 0.7)",
+      success: "rgba(63, 182, 24, 0.7)",
+      warning: "rgba(255, 117, 24, 0.7)",
+      danger: "rgba(255, 0, 57, 0.7)"
+    },
+    lumen: {
+      primary: "rgba(21, 140, 186, 0.70)",
+      info: "rgba(117, 202, 235, 0.90)",
+      success: "rgba(40, 182, 44, 0.70)",
+      warning: "rgba(255, 133, 27, 0.70)",
+      danger: "rgba(255, 65, 54, 0.70)"
+    },
+    paper: {
+      primary: "rgba(33, 150, 243, 0.35)",
+      info: "rgb(225, 190, 231)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(255, 224, 178)",
+      danger: "rgb(249, 189, 187)"
+    },
+    sandstone: {
+      primary: "rgba(50, 93, 136, 0.3)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    simplex: {
+      primary: "rgba(217, 35, 15, 0.25)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    yeti: {
+      primary: "rgba(0, 140, 186, 0.298039)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    }
+  }
+  function themeColor(color) {
+    return themeColors[_options.theme][color];
+  }
+
+  FlexDashboard.prototype = {
+    constructor: FlexDashboard,
+    init: init,
+    isMobilePhone: isMobilePhone,
+    isFillPage: isFillPage,
+    themeColor: themeColor
+  };
+
+  return FlexDashboard;
+
+})();
+
+// utils
+window.FlexDashboardUtils = {
+  resizableImage: function(img) {
+    var src = img.attr('src');
+    var url = 'url("' + src + '")';
+    img.parent().css('background', url)
+                .css('background-size', 'contain')
+                .css('background-repeat', 'no-repeat')
+                .css('background-position', 'center')
+                .addClass('image-container');
+  },
+  setLocation: function(href) {
+    if (history && history.pushState) {
+      history.pushState(null, null, href);
+    } else {
+      window.location.replace(href);
+    }
+    setTimeout(function() {
+        window.scrollTo(0, 0);
+    }, 10);
+    this.manageActiveNavbarMenu();
+  },
+  showPage: function(href) {
+    $('ul.navbar-nav li a[href="' + href + '"]').tab('show');
+    var baseUrl = this.urlWithoutHash(window.location.href);
+    var loc = baseUrl + href;
+    this.setLocation(loc);
+  },
+  showLinkedValue: function(href) {
+    // check for a page link
+    if ($('ul.navbar-nav li a[data-toggle=tab][href="' + href + '"]').length > 0)
+      this.showPage(href);
+    else
+      window.open(href);
+  },
+  urlWithoutHash: function(url) {
+    var hashLoc = url.indexOf('#');
+    if (hashLoc != -1)
+      return url.substring(0, hashLoc);
+    else
+      return url;
+  },
+  urlHash: function(url) {
+    var hashLoc = url.indexOf('#');
+    if (hashLoc != -1)
+      return url.substring(hashLoc);
+    else
+      return "";
+  },
+  manageActiveNavbarMenu: function () {
+    // remove active from anyone currently active
+    $('.navbar ul.nav').find('li').removeClass('active');
+    // find the active tab
+    var activeTab = $('.dashboard-page-wrapper.tab-pane.active');
+    if (activeTab.length > 0) {
+      var tabId = activeTab.attr('id');
+      if (tabId)
+        $(".navbar ul.nav a[href='#" + tabId + "']").parents('li').addClass('active');
+    }
+  }
+};
+
+window.FlexDashboard = new FlexDashboard();
+
+// empty content
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    if (container.find('p').length == 0)
+      return container;
+    else
+      return $();
+  }
+})
+
+// plot image
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('p')
+                    .children('img:only-child');
+  },
+
+  layout: function(title, container, element, fillPage) {
+    FlexDashboardUtils.resizableImage(element);
+  }
+});
+
+// plot image (figure style)
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('div.figure').children('img');
+  },
+
+  layout: function(title, container, element, fillPage) {
+    FlexDashboardUtils.resizableImage(element);
+  }
+});
+
+// htmlwidget
+window.FlexDashboardComponents.push({
+
+  init: function(dashboardContainer) {
+    // trigger "shown" after initial layout to force static htmlwidgets
+    // in runtime: shiny to be resized after the dom has been transformed
+    dashboardContainer.on('flexdashboard:layoutcomplete', function(event) {
+      setTimeout(function() {
+        dashboardContainer.trigger('shown');
+      }, 200);
+    });
+  },
+
+  find: function(container) {
+    return container.children('div[id^="htmlwidget-"],div.html-widget');
+  }
+});
+
+// gauge
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('div.html-widget.gauge');
+  },
+
+  flex: function(fillPage) {
+    return false;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+
+  }
+
+});
+
+// shiny output
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    return container.children('div[class^="shiny-"]');
+  }
+});
+
+// datatables
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    return container.find('.datatables');
+  },
+  flex: function(fillPage) {
+    return fillPage;
+  }
+});
+
+// bootstrap table
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    var bsTable = container.find('table.table');
+    if (bsTable.length !== 0)
+      return bsTable;
+    else
+      return container.find('tr.header').parent('thead').parent('table');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+    // alias variables
+    var bsTable = element;
+
+    // fixup xtable generated tables with a proper thead
+    var headerRow = bsTable.find('tbody > tr:first-child > th').parent();
+    if (headerRow.length > 0) {
+      var thead = $('<thead></thead>');
+      bsTable.prepend(thead);
+      headerRow.detach().appendTo(thead);
+    }
+
+    // improve appearance
+    container.addClass('bootstrap-table');
+
+    // for fill page provide scrolling w/ sticky headers
+    if (fillPage) {
+      // force scrollbar on overflow
+      container.addClass('flowing-content-shim');
+
+      // stable table headers when scrolling
+      bsTable.stickyTableHeaders({
+        scrollableArea: container
+      });
+    }
+  }
+});
+
+// embedded shiny app
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.find('iframe.shiny-frame');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+    if (fillPage) {
+      element.attr('height', '100%');
+    } else {
+      // provide default height if necessary
+      var height = element.get(0).style.height;
+      if (!height)
+        height = element.attr('height');
+      if (!height)
+        element.attr('height', 500);
+    }
+  }
+});
+
+// shiny fillRow or fillCol
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.find('.flexfill-container');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+    if (fillPage)
+      element.css('height', '100%');
+    else {
+      // provide default height if necessary
+      var height = element.get(0).style.height;
+      if (height === "100%" || height === "auto" || height === "initial" ||
+          height === "inherit" || !height) {
+        element.css('height', 500);
+      }
+    }
+  }
+});
+
+// valueBox
+window.FlexDashboardComponents.push({
+
+  type: "custom",
+
+  find: function(container) {
+    if (container.find('span.value-output, .shiny-valuebox-output').length)
+      return container;
+    else
+      return $();
+  },
+
+  flex: function(fillPage) {
+    return false;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+    // alias variables
+    var chartTitle = title;
+    var valueBox = element;
+
+    // add value-box class to container
+    container.addClass('value-box');
+
+    // value paragraph
+    var value = $('<p class="value"></p>');
+
+    // if we have shiny-text-output then just move it in
+    var valueOutputSpan = [];
+    var shinyOutput = valueBox.find('.shiny-valuebox-output').detach();
+    if (shinyOutput.length) {
+      valueBox.children().remove();
+      shinyOutput.html("&mdash;");
+      value.append(shinyOutput);
+    } else {
+      // extract the value (remove leading vector index)
+      var chartValue = valueBox.text().trim();
+      chartValue = chartValue.replace("[1] ", "");
+      valueOutputSpan = valueBox.find('span.value-output').detach();
+      valueBox.children().remove();
+      value.text(chartValue);
+    }
+
+    // caption
+    var caption = $('<p class="caption"></p>');
+    caption.append(chartTitle);
+
+    // build inner div for value box and add it
+    var inner = $('<div class="inner"></div>');
+    inner.append(value);
+    inner.append(caption);
+    valueBox.append(inner);
+
+    // add icon if specified
+    var icon = $('<div class="icon"><i></i></div>');
+    valueBox.append(icon);
+    function setIcon(chartIcon) {
+      var iconLib = "";
+      var iconSplit = chartIcon.split(" ");
+      if (iconSplit.length > 1) {
+        iconLib = iconSplit[0];
+        chartIcon = iconSplit.slice(1).join(" ");
+      } else {
+        var components = chartIcon.split("-");
+        if (components.length > 1)
+          iconLib = components[0];
+      }
+      icon.children('i').attr('class', iconLib + ' ' + chartIcon);
+    }
+    var chartIcon = valueBox.attr('data-icon');
+    if (chartIcon)
+      setIcon(chartIcon);
+
+    // set color based on data-background if necessary
+    var dataBackground = valueBox.attr('data-background');
+    if (dataBackground)
+      valueBox.css('background-color', bgColor);
+    else {
+      // default to bg-primary if no other background is specified
+      if (!valueBox.hasClass('bg-primary') &&
+          !valueBox.hasClass('bg-info') &&
+          !valueBox.hasClass('bg-warning') &&
+          !valueBox.hasClass('bg-success') &&
+          !valueBox.hasClass('bg-danger')) {
+        valueBox.addClass('bg-primary');
+      }
+    }
+
+    // handle data attributes in valueOutputSpan
+    function handleValueOutput(valueOutput) {
+
+      // caption
+      var dataCaption = valueOutput.attr('data-caption');
+      if (dataCaption)
+        caption.html(dataCaption);
+
+      // icon
+      var dataIcon = valueOutput.attr('data-icon');
+      if (dataIcon)
+        setIcon(dataIcon);
+
+      // color
+      var dataColor = valueOutput.attr('data-color');
+      if (dataColor) {
+        if (dataColor.indexOf('bg-') === 0) {
+          valueBox.css('background-color', '');
+          if (!valueBox.hasClass(dataColor)) {
+             valueBox.removeClass('bg-primary bg-info bg-warning bg-danger bg-success');
+             valueBox.addClass(dataColor);
+          }
+        } else {
+          valueBox.removeClass('bg-primary bg-info bg-warning bg-danger bg-success');
+          valueBox.css('background-color', dataColor);
+        }
+      }
+
+      // url
+      var dataHref = valueOutput.attr('data-href');
+      if (dataHref) {
+        valueBox.addClass('linked-value');
+        valueBox.off('click.value-box');
+        valueBox.on('click.value-box', function(e) {
+          window.FlexDashboardUtils.showLinkedValue(dataHref);
+        });
+      }
+    }
+
+    // check for a valueOutputSpan
+    if (valueOutputSpan.length > 0) {
+      handleValueOutput(valueOutputSpan);
+    }
+
+    // if we have a shinyOutput then bind a listener to handle
+    // new valueOutputSpan values
+    shinyOutput.on('shiny:value',
+      function(event) {
+        var element = $(event.target);
+        setTimeout(function() {
+          var valueOutputSpan = element.find('span.value-output');
+          if (valueOutputSpan.length > 0)
+            handleValueOutput(valueOutputSpan);
+        }, 10);
+      }
+    );
+  }
+});
+</script>
+
+<div id="dashboard-container">
 
 <div id="column" class="section level2" data-width="650">
 <h2 data-width="650">Column</h2>
 <div id="relationship-between-the-tmin-and-tmax-of-weather-station-addison-ny-in-2000" class="section level3">
 <h3>Relationship between the tmin and tmax of weather station ADDISON, NY in 2000</h3>
-<pre class="r"><code>ny_noaa %&gt;%
-  drop_na(tmax, tmin) %&gt;%
-  separate(date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;), sep = &quot;\\-&quot;) %&gt;%
-  filter(id == &quot;USC00300023&quot;, year == &quot;2000&quot;) %&gt;%
-  mutate(tmax = as.numeric(tmax), tmin = as.numeric(tmin)) %&gt;%
-  mutate(text_label = str_c(&quot;prcp: &quot;, prcp, &quot;\nsnow: &quot;, snow)) %&gt;%
-  plot_ly(
-    x = ~tmin, y = ~tmax, type = &quot;scatter&quot;, mode = &quot;markers&quot;,
-    color = ~month, text = ~text_label)</code></pre>
-<pre><code>## Warning in RColorBrewer::brewer.pal(N, &quot;Set2&quot;): n too large, allowed maximum for palette Set2 is 8
-## Returning the palette you asked for with that many colors
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
-## Warning in RColorBrewer::brewer.pal(N, &quot;Set2&quot;): n too large, allowed maximum for palette Set2 is 8
-## Returning the palette you asked for with that many colors</code></pre>
-<div id="htmlwidget-59471b9a453dc8bfced8" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-59471b9a453dc8bfced8">{"x":{"visdat":{"a9c8315dee7":["function () ","plotlyVisDat"]},"cur_data":"a9c8315dee7","attrs":{"a9c8315dee7":{"x":{},"y":{},"mode":"markers","text":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"tmin"},"yaxis":{"domain":[0,1],"automargin":true,"title":"tmax"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-78,-83,-6,44,-39,-78,-67,-61,-89,-22,0,-33,-161,-200,-178,-178,-222,-222,-128,-167,-261,-267,-156,-178,-161,-183,-189,-233,-239,-178],"y":[67,106,150,133,156,-11,28,50,78,67,61,33,-33,-72,-22,39,-133,-106,-17,-28,-117,-78,-39,-11,-67,-61,-106,-72,-6,17],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 20<br />snow: 0","prcp: 114<br />snow: 0","prcp: 20<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 13",null,"prcp: 91<br />snow: 0","prcp: 71<br />snow: 0","prcp: 5<br />snow: 76","prcp: 3<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 25","prcp: 5<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 89"],"type":"scatter","name":"01","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-89,-100,-150,-111,-150,-167,-133,-211,-222,-83,-61,-139,-150,-122,-56,-67,-83,-94,-50,-89,-94,-72,-56,-6,0,6,28,0,-22],"y":[-11,-6,-44,-22,-6,0,17,22,0,106,67,22,-33,0,33,11,61,-22,-22,-22,6,50,111,156,100,144,83,122,56],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 3<br />snow: 13","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 13","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0",null,"prcp: 0<br />snow: 0","prcp: 10<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 10<br />snow: 0","prcp: 18<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0",null,"prcp: 5<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 10<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 132<br />snow: 0","prcp: 3<br />snow: 0"],"type":"scatter","name":"02","marker":{"color":"rgba(211,164,122,1)","line":{"color":"rgba(211,164,122,1)"}},"textfont":{"color":"rgba(211,164,122,1)"},"error_y":{"color":"rgba(211,164,122,1)"},"error_x":{"color":"rgba(211,164,122,1)"},"line":{"color":"rgba(211,164,122,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-33,-17,-22,-72,-72,-28,-50,-56,17,-11,-22,-22,-83,-89,-33,-17,-44,-139,-139,-50,6,28,17,-6,-6,-11,-50,-50,0,17,-61],"y":[117,128,22,56,111,100,106,206,261,239,-6,22,-6,72,106,194,128,-22,39,67,139,111,139,128,189,228,139,156,117,50,44],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 3<br />snow: 0","prcp: 117<br />snow: 0","prcp: 5<br />snow: 13","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 84<br />snow: 25","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 104<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 0","prcp: 0<br />snow: 0","prcp: 38<br />snow: 0","prcp: 15<br />snow: 0","prcp: 28<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"03","marker":{"color":"rgba(229,147,127,1)","line":{"color":"rgba(229,147,127,1)"}},"textfont":{"color":"rgba(229,147,127,1)"},"error_y":{"color":"rgba(229,147,127,1)"},"error_x":{"color":"rgba(229,147,127,1)"},"line":{"color":"rgba(229,147,127,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-67,-61,33,83,-11,-33,-11,-17,-39,-39,-28,-17,-61,-56,28,39,44,39,39,44,67,61,28,-6,-22,-28,-33,0,-6,-11],"y":[122,189,128,189,128,56,189,144,128,61,78,83,67,111,200,244,217,72,61,139,144,111,72,72,172,150,133,100,178,211],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 122<br />snow: 0","prcp: 246<br />snow: 0","prcp: 20<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 74<br />snow: 0","prcp: 94<br />snow: 38","prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 76<br />snow: 0","prcp: 15<br />snow: 0","prcp: 0<br />snow: 0","prcp: 58<br />snow: 0","prcp: 94<br />snow: 0","prcp: 122<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 38<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"04","marker":{"color":"rgba(156,159,194,1)","line":{"color":"rgba(156,159,194,1)"}},"textfont":{"color":"rgba(156,159,194,1)"},"error_y":{"color":"rgba(156,159,194,1)"},"error_x":{"color":"rgba(156,159,194,1)"},"line":{"color":"rgba(156,159,194,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-17,-17,-11,-17,39,100,100,111,122,139,67,61,111,44,33,-11,-17,33,78,83,111,106,106,111,94,106,61,61],"y":[150,222,167,233,250,289,294,306,283,333,250,222,239,289,183,167,200,228,256,89,122,133,161,200,239,200,206,228],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 51<br />snow: 0","prcp: 8<br />snow: 0","prcp: 0<br />snow: 0","prcp: 53<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 58<br />snow: 0","prcp: 335<br />snow: 0","prcp: 30<br />snow: 0","prcp: 48<br />snow: 0","prcp: 89<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 130<br />snow: 0","prcp: 0<br />snow: 0","prcp: 373<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 0","prcp: 86<br />snow: 0","prcp: 53<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"05","marker":{"color":"rgba(194,150,199,1)","line":{"color":"rgba(194,150,199,1)"}},"textfont":{"color":"rgba(194,150,199,1)"},"error_y":{"color":"rgba(194,150,199,1)"},"error_x":{"color":"rgba(194,150,199,1)"},"line":{"color":"rgba(194,150,199,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[106,117,100,33,39,94,61,61,106,111,111,161,156,156,167,156,156,139,100,100,100,150,122,117,122,194,194,106,106,100],"y":[272,267,289,189,211,117,117,228,256,272,328,306,194,244,228,250,294,228,144,233,272,283,272,256,289,311,289,261,239,239],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 43<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 0","prcp: 163<br />snow: 0","prcp: 28<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 79<br />snow: 0","prcp: 30<br />snow: 0","prcp: 493<br />snow: 0","prcp: 3<br />snow: 0","prcp: 33<br />snow: 0","prcp: 38<br />snow: 0","prcp: 13<br />snow: 0","prcp: 86<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 109<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 51<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 97<br />snow: 0"],"type":"scatter","name":"06","marker":{"color":"rgba(223,155,177,1)","line":{"color":"rgba(223,155,177,1)"}},"textfont":{"color":"rgba(223,155,177,1)"},"error_y":{"color":"rgba(223,155,177,1)"},"error_x":{"color":"rgba(223,155,177,1)"},"line":{"color":"rgba(223,155,177,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[83,83,117,144,128,72,78,61,61,89,122,72,72,106,133,144,133,128,106,106,100,111,83,83,111,111,122,156,156,150,172],"y":[239,267,278,222,278,256,239,206,250,244,278,250,256,272,267,211,244,256,250,206,239,233,228,233,256,261,250,267,261,256,256],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 28<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 61<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 58<br />snow: 0","prcp: 91<br />snow: 0","prcp: 112<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 13<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 198<br />snow: 0","prcp: 10<br />snow: 0","prcp: 23<br />snow: 0"],"type":"scatter","name":"07","marker":{"color":"rgba(182,204,108,1)","line":{"color":"rgba(182,204,108,1)"}},"textfont":{"color":"rgba(182,204,108,1)"},"error_y":{"color":"rgba(182,204,108,1)"},"error_x":{"color":"rgba(182,204,108,1)"},"line":{"color":"rgba(182,204,108,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[194,178,161,117,83,83,106,144,139,156,156,128,128,133,128,133,139,94,100,67,56,44,78,139,128,111,100,156,156,150,161],"y":[289,289,289,261,233,256,256,278,294,300,261,222,211,233,244,283,233,211,206,228,194,222,256,244,256,261,267,267,256,250,267],"mode":"markers","text":["prcp: 41<br />snow: 0","prcp: 10<br />snow: 0","prcp: 33<br />snow: 0","prcp: 20<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 279<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 246<br />snow: 0","prcp: 0<br />snow: 0","prcp: 58<br />snow: 0","prcp: 23<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 20<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 104<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"08","marker":{"color":"rgba(209,217,69,1)","line":{"color":"rgba(209,217,69,1)"}},"textfont":{"color":"rgba(209,217,69,1)"},"error_y":{"color":"rgba(209,217,69,1)"},"error_x":{"color":"rgba(209,217,69,1)"},"line":{"color":"rgba(209,217,69,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[161,189,200,161,39,22,22,44,67,156,161,194,133,78,72,72,72,72,61,78,78,50,39,117,50,33,22,17,-17,-22],"y":[278,300,294,272,172,161,211,233,278,267,278,233,283,206,239,139,217,189,233,211,278,183,172,217,150,128,139,211,100,156],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 155<br />snow: 0","prcp: 43<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 142<br />snow: 0","prcp: 3<br />snow: 0","prcp: 3<br />snow: 0","prcp: 97<br />snow: 0","prcp: 0<br />snow: 0","prcp: 30<br />snow: 0","prcp: 64<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 89<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 13<br />snow: 0","prcp: 8<br />snow: 0","prcp: 10<br />snow: 0","prcp: 0<br />snow: 0","prcp: 33<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"09","marker":{"color":"rgba(253,215,61,1)","line":{"color":"rgba(253,215,61,1)"}},"textfont":{"color":"rgba(253,215,61,1)"},"error_y":{"color":"rgba(253,215,61,1)"},"error_x":{"color":"rgba(253,215,61,1)"},"line":{"color":"rgba(253,215,61,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-11,50,56,44,44,83,39,0,-17,-22,-22,-17,-17,6,22,56,89,100,28,-11,-6,6,-28,-44,44,78,67,56,-33,-44,-50],"y":[211,217,239,228,200,200,144,89,89,61,111,172,211,233,244,178,167,128,144,156,222,244,133,178,161,194,206,250,72,89,100],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 112<br />snow: 0","prcp: 358<br />snow: 0",null,null,"prcp: 8<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 241<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 15<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"10","marker":{"color":"rgba(237,202,125,1)","line":{"color":"rgba(237,202,125,1)"}},"textfont":{"color":"rgba(237,202,125,1)"},"error_y":{"color":"rgba(237,202,125,1)"},"error_x":{"color":"rgba(237,202,125,1)"},"line":{"color":"rgba(237,202,125,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-50,-50,-44,-6,-6,-56,-61,-50,33,89,56,39,22,22,-39,6,-50,-50,-72,-72,-61,-67,-122,-133,-128,-100,28,28,11,0],"y":[117,133,172,128,100,78,111,133,200,144,150,61,44,78,106,78,61,61,28,39,33,33,-17,-22,6,44,72,56,67,44],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 13<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 94<br />snow: 0","prcp: 46<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 25","prcp: 10<br />snow: 51","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 71<br />snow: 0","prcp: 13<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 13"],"type":"scatter","name":"11","marker":{"color":"rgba(212,190,160,1)","line":{"color":"rgba(212,190,160,1)"}},"textfont":{"color":"rgba(212,190,160,1)"},"error_y":{"color":"rgba(212,190,160,1)"},"error_x":{"color":"rgba(212,190,160,1)"},"line":{"color":"rgba(212,190,160,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-22,-100,-144,-150,-156,-83,-100,-83,-106,-167,-167,-17,-139,-144,-61,-106,-11,-67,-100,-72,-117,-106,-161,-139,-133,-167,-106,-139,-167,-167,-111],"y":[11,-11,-22,0,44,33,-50,-22,-44,-44,17,56,50,-28,17,17,122,111,-17,-17,-33,-17,-39,-22,-28,-94,-39,-33,-78,-61,-22],"mode":"markers","text":["prcp: 5<br />snow: 13","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 25","prcp: 0<br />snow: 0","prcp: 13<br />snow: 38","prcp: 3<br />snow: 25","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 79<br />snow: 0","prcp: 8<br />snow: 0","prcp: 5<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 97<br />snow: 0","prcp: 28<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 13","prcp: 0<br />snow: 0","prcp: 3<br />snow: 13","prcp: 5<br />snow: 13","prcp: 0<br />snow: 0","prcp: 5<br />snow: 25","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 25","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 25"],"type":"scatter","name":"12","marker":{"color":"rgba(179,179,179,1)","line":{"color":"rgba(179,179,179,1)"}},"textfont":{"color":"rgba(179,179,179,1)"},"error_y":{"color":"rgba(179,179,179,1)"},"error_x":{"color":"rgba(179,179,179,1)"},"line":{"color":"rgba(179,179,179,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="htmlwidget-d7a120123f8a68638602" style="width:576px;height:460.8px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d7a120123f8a68638602">{"x":{"visdat":{"4574130ed12":["function () ","plotlyVisDat"]},"cur_data":"4574130ed12","attrs":{"4574130ed12":{"x":{},"y":{},"mode":"markers","text":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"tmin"},"yaxis":{"domain":[0,1],"automargin":true,"title":"tmax"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-78,-83,-6,44,-39,-78,-67,-61,-89,-22,0,-33,-161,-200,-178,-178,-222,-222,-128,-167,-261,-267,-156,-178,-161,-183,-189,-233,-239,-178],"y":[67,106,150,133,156,-11,28,50,78,67,61,33,-33,-72,-22,39,-133,-106,-17,-28,-117,-78,-39,-11,-67,-61,-106,-72,-6,17],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 20<br />snow: 0","prcp: 114<br />snow: 0","prcp: 20<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 13",null,"prcp: 91<br />snow: 0","prcp: 71<br />snow: 0","prcp: 5<br />snow: 76","prcp: 3<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 25","prcp: 5<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 89"],"type":"scatter","name":"01","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-89,-100,-150,-111,-150,-167,-133,-211,-222,-83,-61,-139,-150,-122,-56,-67,-83,-94,-50,-89,-94,-72,-56,-6,0,6,28,0,-22],"y":[-11,-6,-44,-22,-6,0,17,22,0,106,67,22,-33,0,33,11,61,-22,-22,-22,6,50,111,156,100,144,83,122,56],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 3<br />snow: 13","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 13","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0",null,"prcp: 0<br />snow: 0","prcp: 10<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 10<br />snow: 0","prcp: 18<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0",null,"prcp: 5<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 10<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 132<br />snow: 0","prcp: 3<br />snow: 0"],"type":"scatter","name":"02","marker":{"color":"rgba(211,164,122,1)","line":{"color":"rgba(211,164,122,1)"}},"textfont":{"color":"rgba(211,164,122,1)"},"error_y":{"color":"rgba(211,164,122,1)"},"error_x":{"color":"rgba(211,164,122,1)"},"line":{"color":"rgba(211,164,122,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-33,-17,-22,-72,-72,-28,-50,-56,17,-11,-22,-22,-83,-89,-33,-17,-44,-139,-139,-50,6,28,17,-6,-6,-11,-50,-50,0,17,-61],"y":[117,128,22,56,111,100,106,206,261,239,-6,22,-6,72,106,194,128,-22,39,67,139,111,139,128,189,228,139,156,117,50,44],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 3<br />snow: 0","prcp: 117<br />snow: 0","prcp: 5<br />snow: 13","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 84<br />snow: 25","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 104<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 0","prcp: 0<br />snow: 0","prcp: 38<br />snow: 0","prcp: 15<br />snow: 0","prcp: 28<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"03","marker":{"color":"rgba(229,147,127,1)","line":{"color":"rgba(229,147,127,1)"}},"textfont":{"color":"rgba(229,147,127,1)"},"error_y":{"color":"rgba(229,147,127,1)"},"error_x":{"color":"rgba(229,147,127,1)"},"line":{"color":"rgba(229,147,127,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-67,-61,33,83,-11,-33,-11,-17,-39,-39,-28,-17,-61,-56,28,39,44,39,39,44,67,61,28,-6,-22,-28,-33,0,-6,-11],"y":[122,189,128,189,128,56,189,144,128,61,78,83,67,111,200,244,217,72,61,139,144,111,72,72,172,150,133,100,178,211],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 122<br />snow: 0","prcp: 246<br />snow: 0","prcp: 20<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 74<br />snow: 0","prcp: 94<br />snow: 38","prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 76<br />snow: 0","prcp: 15<br />snow: 0","prcp: 0<br />snow: 0","prcp: 58<br />snow: 0","prcp: 94<br />snow: 0","prcp: 122<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 38<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"04","marker":{"color":"rgba(156,159,194,1)","line":{"color":"rgba(156,159,194,1)"}},"textfont":{"color":"rgba(156,159,194,1)"},"error_y":{"color":"rgba(156,159,194,1)"},"error_x":{"color":"rgba(156,159,194,1)"},"line":{"color":"rgba(156,159,194,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-17,-17,-11,-17,39,100,100,111,122,139,67,61,111,44,33,-11,-17,33,78,83,111,106,106,111,94,106,61,61],"y":[150,222,167,233,250,289,294,306,283,333,250,222,239,289,183,167,200,228,256,89,122,133,161,200,239,200,206,228],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 51<br />snow: 0","prcp: 8<br />snow: 0","prcp: 0<br />snow: 0","prcp: 53<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 58<br />snow: 0","prcp: 335<br />snow: 0","prcp: 30<br />snow: 0","prcp: 48<br />snow: 0","prcp: 89<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 130<br />snow: 0","prcp: 0<br />snow: 0","prcp: 373<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 0","prcp: 86<br />snow: 0","prcp: 53<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"05","marker":{"color":"rgba(194,150,199,1)","line":{"color":"rgba(194,150,199,1)"}},"textfont":{"color":"rgba(194,150,199,1)"},"error_y":{"color":"rgba(194,150,199,1)"},"error_x":{"color":"rgba(194,150,199,1)"},"line":{"color":"rgba(194,150,199,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[106,117,100,33,39,94,61,61,106,111,111,161,156,156,167,156,156,139,100,100,100,150,122,117,122,194,194,106,106,100],"y":[272,267,289,189,211,117,117,228,256,272,328,306,194,244,228,250,294,228,144,233,272,283,272,256,289,311,289,261,239,239],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 43<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 0","prcp: 163<br />snow: 0","prcp: 28<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 79<br />snow: 0","prcp: 30<br />snow: 0","prcp: 493<br />snow: 0","prcp: 3<br />snow: 0","prcp: 33<br />snow: 0","prcp: 38<br />snow: 0","prcp: 13<br />snow: 0","prcp: 86<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 109<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 51<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 97<br />snow: 0"],"type":"scatter","name":"06","marker":{"color":"rgba(223,155,177,1)","line":{"color":"rgba(223,155,177,1)"}},"textfont":{"color":"rgba(223,155,177,1)"},"error_y":{"color":"rgba(223,155,177,1)"},"error_x":{"color":"rgba(223,155,177,1)"},"line":{"color":"rgba(223,155,177,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[83,83,117,144,128,72,78,61,61,89,122,72,72,106,133,144,133,128,106,106,100,111,83,83,111,111,122,156,156,150,172],"y":[239,267,278,222,278,256,239,206,250,244,278,250,256,272,267,211,244,256,250,206,239,233,228,233,256,261,250,267,261,256,256],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 28<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 61<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 58<br />snow: 0","prcp: 91<br />snow: 0","prcp: 112<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 13<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 198<br />snow: 0","prcp: 10<br />snow: 0","prcp: 23<br />snow: 0"],"type":"scatter","name":"07","marker":{"color":"rgba(182,204,108,1)","line":{"color":"rgba(182,204,108,1)"}},"textfont":{"color":"rgba(182,204,108,1)"},"error_y":{"color":"rgba(182,204,108,1)"},"error_x":{"color":"rgba(182,204,108,1)"},"line":{"color":"rgba(182,204,108,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[194,178,161,117,83,83,106,144,139,156,156,128,128,133,128,133,139,94,100,67,56,44,78,139,128,111,100,156,156,150,161],"y":[289,289,289,261,233,256,256,278,294,300,261,222,211,233,244,283,233,211,206,228,194,222,256,244,256,261,267,267,256,250,267],"mode":"markers","text":["prcp: 41<br />snow: 0","prcp: 10<br />snow: 0","prcp: 33<br />snow: 0","prcp: 20<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 279<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 246<br />snow: 0","prcp: 0<br />snow: 0","prcp: 58<br />snow: 0","prcp: 23<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 20<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 104<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"08","marker":{"color":"rgba(209,217,69,1)","line":{"color":"rgba(209,217,69,1)"}},"textfont":{"color":"rgba(209,217,69,1)"},"error_y":{"color":"rgba(209,217,69,1)"},"error_x":{"color":"rgba(209,217,69,1)"},"line":{"color":"rgba(209,217,69,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[161,189,200,161,39,22,22,44,67,156,161,194,133,78,72,72,72,72,61,78,78,50,39,117,50,33,22,17,-17,-22],"y":[278,300,294,272,172,161,211,233,278,267,278,233,283,206,239,139,217,189,233,211,278,183,172,217,150,128,139,211,100,156],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 155<br />snow: 0","prcp: 43<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 142<br />snow: 0","prcp: 3<br />snow: 0","prcp: 3<br />snow: 0","prcp: 97<br />snow: 0","prcp: 0<br />snow: 0","prcp: 30<br />snow: 0","prcp: 64<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 89<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 13<br />snow: 0","prcp: 8<br />snow: 0","prcp: 10<br />snow: 0","prcp: 0<br />snow: 0","prcp: 33<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"09","marker":{"color":"rgba(253,215,61,1)","line":{"color":"rgba(253,215,61,1)"}},"textfont":{"color":"rgba(253,215,61,1)"},"error_y":{"color":"rgba(253,215,61,1)"},"error_x":{"color":"rgba(253,215,61,1)"},"line":{"color":"rgba(253,215,61,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-11,50,56,44,44,83,39,0,-17,-22,-22,-17,-17,6,22,56,89,100,28,-11,-6,6,-28,-44,44,78,67,56,-33,-44,-50],"y":[211,217,239,228,200,200,144,89,89,61,111,172,211,233,244,178,167,128,144,156,222,244,133,178,161,194,206,250,72,89,100],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 112<br />snow: 0","prcp: 358<br />snow: 0",null,null,"prcp: 8<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 241<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 15<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0"],"type":"scatter","name":"10","marker":{"color":"rgba(237,202,125,1)","line":{"color":"rgba(237,202,125,1)"}},"textfont":{"color":"rgba(237,202,125,1)"},"error_y":{"color":"rgba(237,202,125,1)"},"error_x":{"color":"rgba(237,202,125,1)"},"line":{"color":"rgba(237,202,125,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-50,-50,-44,-6,-6,-56,-61,-50,33,89,56,39,22,22,-39,6,-50,-50,-72,-72,-61,-67,-122,-133,-128,-100,28,28,11,0],"y":[117,133,172,128,100,78,111,133,200,144,150,61,44,78,106,78,61,61,28,39,33,33,-17,-22,6,44,72,56,67,44],"mode":"markers","text":["prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 13<br />snow: 0","prcp: 5<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 94<br />snow: 0","prcp: 46<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 0","prcp: 3<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 25","prcp: 10<br />snow: 51","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 0","prcp: 71<br />snow: 0","prcp: 13<br />snow: 0","prcp: 0<br />snow: 0","prcp: 5<br />snow: 13"],"type":"scatter","name":"11","marker":{"color":"rgba(212,190,160,1)","line":{"color":"rgba(212,190,160,1)"}},"textfont":{"color":"rgba(212,190,160,1)"},"error_y":{"color":"rgba(212,190,160,1)"},"error_x":{"color":"rgba(212,190,160,1)"},"line":{"color":"rgba(212,190,160,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[-22,-100,-144,-150,-156,-83,-100,-83,-106,-167,-167,-17,-139,-144,-61,-106,-11,-67,-100,-72,-117,-106,-161,-139,-133,-167,-106,-139,-167,-167,-111],"y":[11,-11,-22,0,44,33,-50,-22,-44,-44,17,56,50,-28,17,17,122,111,-17,-17,-33,-17,-39,-22,-28,-94,-39,-33,-78,-61,-22],"mode":"markers","text":["prcp: 5<br />snow: 13","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 8<br />snow: 25","prcp: 0<br />snow: 0","prcp: 13<br />snow: 38","prcp: 3<br />snow: 25","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 79<br />snow: 0","prcp: 8<br />snow: 0","prcp: 5<br />snow: 64","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 97<br />snow: 0","prcp: 28<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 13","prcp: 0<br />snow: 0","prcp: 3<br />snow: 13","prcp: 5<br />snow: 13","prcp: 0<br />snow: 0","prcp: 5<br />snow: 25","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 25","prcp: 0<br />snow: 0","prcp: 0<br />snow: 0","prcp: 3<br />snow: 25"],"type":"scatter","name":"12","marker":{"color":"rgba(179,179,179,1)","line":{"color":"rgba(179,179,179,1)"}},"textfont":{"color":"rgba(179,179,179,1)"},"error_y":{"color":"rgba(179,179,179,1)"},"error_x":{"color":"rgba(179,179,179,1)"},"line":{"color":"rgba(179,179,179,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="column-1" class="section level2" data-width="350">
 <h2 data-width="350">Column</h2>
 <div id="weather-stations-with-more-than-1000-observations-of-prcp-0-from-2005-to-2010" class="section level3">
 <h3>Weather stations with more than 1000 observations of prcp &gt; 0 from 2005 to 2010</h3>
-<pre class="r"><code>ny_noaa %&gt;%
-  separate(date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;), sep = &quot;\\-&quot;) %&gt;%
-  mutate(year = as.numeric(year)) %&gt;%
-  filter(year &gt;= 2005, prcp &gt; 0) %&gt;%
-  count(id) %&gt;% 
-  filter(n &gt; 1000) %&gt;%
-  mutate(id = fct_reorder(id, n)) %&gt;% 
-  plot_ly(x = ~id, y = ~n, color = ~id, type = &quot;bar&quot;, colors = &quot;viridis&quot;)</code></pre>
-<div id="htmlwidget-2eeab79961e56e41819b" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2eeab79961e56e41819b">{"x":{"visdat":{"a9c86178449b":["function () ","plotlyVisDat"]},"cur_data":"a9c86178449b","attrs":{"a9c86178449b":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"id","type":"category","categoryorder":"array","categoryarray":["USC00306047","USC00307329","USC00306085","USC00302060","USC00304174","USW00054757","USC00303983","USC00306314","USW00014771","US1NYOG0002","USC00304996","USC00304836","USC00300870","USC00304207","USC00305714","USC00303773","US1NYCY0002","USC00306196","USC00301625","USC00303851","USC00300321","US1NYCR0003","USC00300785","USC00302036","USC00308962","USW00064758","USC00304555","USC00307705","USC00304102","USC00303961","USW00094740","US1NYOD0007","USW00054773","USC00305512","USC00303025"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"n"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["USC00306047"],"y":[1005],"type":"bar","name":"USC00306047","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00307329"],"y":[1012],"type":"bar","name":"USC00307329","marker":{"color":"rgba(71,12,95,1)","line":{"color":"rgba(71,12,95,1)"}},"textfont":{"color":"rgba(71,12,95,1)"},"error_y":{"color":"rgba(71,12,95,1)"},"error_x":{"color":"rgba(71,12,95,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00306085"],"y":[1013],"type":"bar","name":"USC00306085","marker":{"color":"rgba(72,23,105,1)","line":{"color":"rgba(72,23,105,1)"}},"textfont":{"color":"rgba(72,23,105,1)"},"error_y":{"color":"rgba(72,23,105,1)"},"error_x":{"color":"rgba(72,23,105,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00302060"],"y":[1018],"type":"bar","name":"USC00302060","marker":{"color":"rgba(72,33,114,1)","line":{"color":"rgba(72,33,114,1)"}},"textfont":{"color":"rgba(72,33,114,1)"},"error_y":{"color":"rgba(72,33,114,1)"},"error_x":{"color":"rgba(72,33,114,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304174"],"y":[1022],"type":"bar","name":"USC00304174","marker":{"color":"rgba(71,42,122,1)","line":{"color":"rgba(71,42,122,1)"}},"textfont":{"color":"rgba(71,42,122,1)"},"error_y":{"color":"rgba(71,42,122,1)"},"error_x":{"color":"rgba(71,42,122,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00054757"],"y":[1025],"type":"bar","name":"USW00054757","marker":{"color":"rgba(70,52,127,1)","line":{"color":"rgba(70,52,127,1)"}},"textfont":{"color":"rgba(70,52,127,1)"},"error_y":{"color":"rgba(70,52,127,1)"},"error_x":{"color":"rgba(70,52,127,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303983"],"y":[1028],"type":"bar","name":"USC00303983","marker":{"color":"rgba(67,61,132,1)","line":{"color":"rgba(67,61,132,1)"}},"textfont":{"color":"rgba(67,61,132,1)"},"error_y":{"color":"rgba(67,61,132,1)"},"error_x":{"color":"rgba(67,61,132,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00306314"],"y":[1032],"type":"bar","name":"USC00306314","marker":{"color":"rgba(64,70,136,1)","line":{"color":"rgba(64,70,136,1)"}},"textfont":{"color":"rgba(64,70,136,1)"},"error_y":{"color":"rgba(64,70,136,1)"},"error_x":{"color":"rgba(64,70,136,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00014771"],"y":[1034],"type":"bar","name":"USW00014771","marker":{"color":"rgba(61,78,138,1)","line":{"color":"rgba(61,78,138,1)"}},"textfont":{"color":"rgba(61,78,138,1)"},"error_y":{"color":"rgba(61,78,138,1)"},"error_x":{"color":"rgba(61,78,138,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["US1NYOG0002"],"y":[1036],"type":"bar","name":"US1NYOG0002","marker":{"color":"rgba(57,86,140,1)","line":{"color":"rgba(57,86,140,1)"}},"textfont":{"color":"rgba(57,86,140,1)"},"error_y":{"color":"rgba(57,86,140,1)"},"error_x":{"color":"rgba(57,86,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304996"],"y":[1043],"type":"bar","name":"USC00304996","marker":{"color":"rgba(53,94,141,1)","line":{"color":"rgba(53,94,141,1)"}},"textfont":{"color":"rgba(53,94,141,1)"},"error_y":{"color":"rgba(53,94,141,1)"},"error_x":{"color":"rgba(53,94,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304836"],"y":[1046],"type":"bar","name":"USC00304836","marker":{"color":"rgba(50,102,142,1)","line":{"color":"rgba(50,102,142,1)"}},"textfont":{"color":"rgba(50,102,142,1)"},"error_y":{"color":"rgba(50,102,142,1)"},"error_x":{"color":"rgba(50,102,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00300870"],"y":[1054],"type":"bar","name":"USC00300870","marker":{"color":"rgba(46,109,142,1)","line":{"color":"rgba(46,109,142,1)"}},"textfont":{"color":"rgba(46,109,142,1)"},"error_y":{"color":"rgba(46,109,142,1)"},"error_x":{"color":"rgba(46,109,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304207"],"y":[1064],"type":"bar","name":"USC00304207","marker":{"color":"rgba(44,116,142,1)","line":{"color":"rgba(44,116,142,1)"}},"textfont":{"color":"rgba(44,116,142,1)"},"error_y":{"color":"rgba(44,116,142,1)"},"error_x":{"color":"rgba(44,116,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00305714"],"y":[1064],"type":"bar","name":"USC00305714","marker":{"color":"rgba(41,123,142,1)","line":{"color":"rgba(41,123,142,1)"}},"textfont":{"color":"rgba(41,123,142,1)"},"error_y":{"color":"rgba(41,123,142,1)"},"error_x":{"color":"rgba(41,123,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303773"],"y":[1068],"type":"bar","name":"USC00303773","marker":{"color":"rgba(38,130,142,1)","line":{"color":"rgba(38,130,142,1)"}},"textfont":{"color":"rgba(38,130,142,1)"},"error_y":{"color":"rgba(38,130,142,1)"},"error_x":{"color":"rgba(38,130,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["US1NYCY0002"],"y":[1074],"type":"bar","name":"US1NYCY0002","marker":{"color":"rgba(35,137,142,1)","line":{"color":"rgba(35,137,142,1)"}},"textfont":{"color":"rgba(35,137,142,1)"},"error_y":{"color":"rgba(35,137,142,1)"},"error_x":{"color":"rgba(35,137,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00306196"],"y":[1075],"type":"bar","name":"USC00306196","marker":{"color":"rgba(33,144,141,1)","line":{"color":"rgba(33,144,141,1)"}},"textfont":{"color":"rgba(33,144,141,1)"},"error_y":{"color":"rgba(33,144,141,1)"},"error_x":{"color":"rgba(33,144,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00301625"],"y":[1079],"type":"bar","name":"USC00301625","marker":{"color":"rgba(31,151,139,1)","line":{"color":"rgba(31,151,139,1)"}},"textfont":{"color":"rgba(31,151,139,1)"},"error_y":{"color":"rgba(31,151,139,1)"},"error_x":{"color":"rgba(31,151,139,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303851"],"y":[1082],"type":"bar","name":"USC00303851","marker":{"color":"rgba(31,158,137,1)","line":{"color":"rgba(31,158,137,1)"}},"textfont":{"color":"rgba(31,158,137,1)"},"error_y":{"color":"rgba(31,158,137,1)"},"error_x":{"color":"rgba(31,158,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00300321"],"y":[1083],"type":"bar","name":"USC00300321","marker":{"color":"rgba(33,165,133,1)","line":{"color":"rgba(33,165,133,1)"}},"textfont":{"color":"rgba(33,165,133,1)"},"error_y":{"color":"rgba(33,165,133,1)"},"error_x":{"color":"rgba(33,165,133,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["US1NYCR0003"],"y":[1084],"type":"bar","name":"US1NYCR0003","marker":{"color":"rgba(38,172,130,1)","line":{"color":"rgba(38,172,130,1)"}},"textfont":{"color":"rgba(38,172,130,1)"},"error_y":{"color":"rgba(38,172,130,1)"},"error_x":{"color":"rgba(38,172,130,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00300785"],"y":[1086],"type":"bar","name":"USC00300785","marker":{"color":"rgba(46,179,124,1)","line":{"color":"rgba(46,179,124,1)"}},"textfont":{"color":"rgba(46,179,124,1)"},"error_y":{"color":"rgba(46,179,124,1)"},"error_x":{"color":"rgba(46,179,124,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00302036"],"y":[1095],"type":"bar","name":"USC00302036","marker":{"color":"rgba(57,185,119,1)","line":{"color":"rgba(57,185,119,1)"}},"textfont":{"color":"rgba(57,185,119,1)"},"error_y":{"color":"rgba(57,185,119,1)"},"error_x":{"color":"rgba(57,185,119,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00308962"],"y":[1095],"type":"bar","name":"USC00308962","marker":{"color":"rgba(70,192,111,1)","line":{"color":"rgba(70,192,111,1)"}},"textfont":{"color":"rgba(70,192,111,1)"},"error_y":{"color":"rgba(70,192,111,1)"},"error_x":{"color":"rgba(70,192,111,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00064758"],"y":[1100],"type":"bar","name":"USW00064758","marker":{"color":"rgba(85,197,104,1)","line":{"color":"rgba(85,197,104,1)"}},"textfont":{"color":"rgba(85,197,104,1)"},"error_y":{"color":"rgba(85,197,104,1)"},"error_x":{"color":"rgba(85,197,104,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304555"],"y":[1111],"type":"bar","name":"USC00304555","marker":{"color":"rgba(101,203,94,1)","line":{"color":"rgba(101,203,94,1)"}},"textfont":{"color":"rgba(101,203,94,1)"},"error_y":{"color":"rgba(101,203,94,1)"},"error_x":{"color":"rgba(101,203,94,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00307705"],"y":[1115],"type":"bar","name":"USC00307705","marker":{"color":"rgba(118,208,84,1)","line":{"color":"rgba(118,208,84,1)"}},"textfont":{"color":"rgba(118,208,84,1)"},"error_y":{"color":"rgba(118,208,84,1)"},"error_x":{"color":"rgba(118,208,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304102"],"y":[1122],"type":"bar","name":"USC00304102","marker":{"color":"rgba(137,213,72,1)","line":{"color":"rgba(137,213,72,1)"}},"textfont":{"color":"rgba(137,213,72,1)"},"error_y":{"color":"rgba(137,213,72,1)"},"error_x":{"color":"rgba(137,213,72,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303961"],"y":[1130],"type":"bar","name":"USC00303961","marker":{"color":"rgba(156,217,60,1)","line":{"color":"rgba(156,217,60,1)"}},"textfont":{"color":"rgba(156,217,60,1)"},"error_y":{"color":"rgba(156,217,60,1)"},"error_x":{"color":"rgba(156,217,60,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00094740"],"y":[1131],"type":"bar","name":"USW00094740","marker":{"color":"rgba(176,221,47,1)","line":{"color":"rgba(176,221,47,1)"}},"textfont":{"color":"rgba(176,221,47,1)"},"error_y":{"color":"rgba(176,221,47,1)"},"error_x":{"color":"rgba(176,221,47,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["US1NYOD0007"],"y":[1137],"type":"bar","name":"US1NYOD0007","marker":{"color":"rgba(196,224,34,1)","line":{"color":"rgba(196,224,34,1)"}},"textfont":{"color":"rgba(196,224,34,1)"},"error_y":{"color":"rgba(196,224,34,1)"},"error_x":{"color":"rgba(196,224,34,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00054773"],"y":[1162],"type":"bar","name":"USW00054773","marker":{"color":"rgba(216,226,25,1)","line":{"color":"rgba(216,226,25,1)"}},"textfont":{"color":"rgba(216,226,25,1)"},"error_y":{"color":"rgba(216,226,25,1)"},"error_x":{"color":"rgba(216,226,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00305512"],"y":[1180],"type":"bar","name":"USC00305512","marker":{"color":"rgba(235,229,27,1)","line":{"color":"rgba(235,229,27,1)"}},"textfont":{"color":"rgba(235,229,27,1)"},"error_y":{"color":"rgba(235,229,27,1)"},"error_x":{"color":"rgba(235,229,27,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303025"],"y":[1243],"type":"bar","name":"USC00303025","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div id="htmlwidget-9a90bc069602854c6eda" style="width:576px;height:460.8px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9a90bc069602854c6eda">{"x":{"visdat":{"457479b93189":["function () ","plotlyVisDat"]},"cur_data":"457479b93189","attrs":{"457479b93189":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"id","type":"category","categoryorder":"array","categoryarray":["USC00306047","USC00307329","USC00306085","USC00302060","USC00304174","USW00054757","USC00303983","USC00306314","USW00014771","US1NYOG0002","USC00304996","USC00304836","USC00300870","USC00304207","USC00305714","USC00303773","US1NYCY0002","USC00306196","USC00301625","USC00303851","USC00300321","US1NYCR0003","USC00300785","USC00302036","USC00308962","USW00064758","USC00304555","USC00307705","USC00304102","USC00303961","USW00094740","US1NYOD0007","USW00054773","USC00305512","USC00303025"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"n"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["USC00306047"],"y":[1005],"type":"bar","name":"USC00306047","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00307329"],"y":[1012],"type":"bar","name":"USC00307329","marker":{"color":"rgba(71,12,95,1)","line":{"color":"rgba(71,12,95,1)"}},"textfont":{"color":"rgba(71,12,95,1)"},"error_y":{"color":"rgba(71,12,95,1)"},"error_x":{"color":"rgba(71,12,95,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00306085"],"y":[1013],"type":"bar","name":"USC00306085","marker":{"color":"rgba(72,23,105,1)","line":{"color":"rgba(72,23,105,1)"}},"textfont":{"color":"rgba(72,23,105,1)"},"error_y":{"color":"rgba(72,23,105,1)"},"error_x":{"color":"rgba(72,23,105,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00302060"],"y":[1018],"type":"bar","name":"USC00302060","marker":{"color":"rgba(72,33,114,1)","line":{"color":"rgba(72,33,114,1)"}},"textfont":{"color":"rgba(72,33,114,1)"},"error_y":{"color":"rgba(72,33,114,1)"},"error_x":{"color":"rgba(72,33,114,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304174"],"y":[1022],"type":"bar","name":"USC00304174","marker":{"color":"rgba(71,42,122,1)","line":{"color":"rgba(71,42,122,1)"}},"textfont":{"color":"rgba(71,42,122,1)"},"error_y":{"color":"rgba(71,42,122,1)"},"error_x":{"color":"rgba(71,42,122,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00054757"],"y":[1025],"type":"bar","name":"USW00054757","marker":{"color":"rgba(70,52,127,1)","line":{"color":"rgba(70,52,127,1)"}},"textfont":{"color":"rgba(70,52,127,1)"},"error_y":{"color":"rgba(70,52,127,1)"},"error_x":{"color":"rgba(70,52,127,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303983"],"y":[1028],"type":"bar","name":"USC00303983","marker":{"color":"rgba(67,61,132,1)","line":{"color":"rgba(67,61,132,1)"}},"textfont":{"color":"rgba(67,61,132,1)"},"error_y":{"color":"rgba(67,61,132,1)"},"error_x":{"color":"rgba(67,61,132,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00306314"],"y":[1032],"type":"bar","name":"USC00306314","marker":{"color":"rgba(64,70,136,1)","line":{"color":"rgba(64,70,136,1)"}},"textfont":{"color":"rgba(64,70,136,1)"},"error_y":{"color":"rgba(64,70,136,1)"},"error_x":{"color":"rgba(64,70,136,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00014771"],"y":[1034],"type":"bar","name":"USW00014771","marker":{"color":"rgba(61,78,138,1)","line":{"color":"rgba(61,78,138,1)"}},"textfont":{"color":"rgba(61,78,138,1)"},"error_y":{"color":"rgba(61,78,138,1)"},"error_x":{"color":"rgba(61,78,138,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["US1NYOG0002"],"y":[1036],"type":"bar","name":"US1NYOG0002","marker":{"color":"rgba(57,86,140,1)","line":{"color":"rgba(57,86,140,1)"}},"textfont":{"color":"rgba(57,86,140,1)"},"error_y":{"color":"rgba(57,86,140,1)"},"error_x":{"color":"rgba(57,86,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304996"],"y":[1043],"type":"bar","name":"USC00304996","marker":{"color":"rgba(53,94,141,1)","line":{"color":"rgba(53,94,141,1)"}},"textfont":{"color":"rgba(53,94,141,1)"},"error_y":{"color":"rgba(53,94,141,1)"},"error_x":{"color":"rgba(53,94,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304836"],"y":[1046],"type":"bar","name":"USC00304836","marker":{"color":"rgba(50,102,142,1)","line":{"color":"rgba(50,102,142,1)"}},"textfont":{"color":"rgba(50,102,142,1)"},"error_y":{"color":"rgba(50,102,142,1)"},"error_x":{"color":"rgba(50,102,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00300870"],"y":[1054],"type":"bar","name":"USC00300870","marker":{"color":"rgba(46,109,142,1)","line":{"color":"rgba(46,109,142,1)"}},"textfont":{"color":"rgba(46,109,142,1)"},"error_y":{"color":"rgba(46,109,142,1)"},"error_x":{"color":"rgba(46,109,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304207"],"y":[1064],"type":"bar","name":"USC00304207","marker":{"color":"rgba(44,116,142,1)","line":{"color":"rgba(44,116,142,1)"}},"textfont":{"color":"rgba(44,116,142,1)"},"error_y":{"color":"rgba(44,116,142,1)"},"error_x":{"color":"rgba(44,116,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00305714"],"y":[1064],"type":"bar","name":"USC00305714","marker":{"color":"rgba(41,123,142,1)","line":{"color":"rgba(41,123,142,1)"}},"textfont":{"color":"rgba(41,123,142,1)"},"error_y":{"color":"rgba(41,123,142,1)"},"error_x":{"color":"rgba(41,123,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303773"],"y":[1068],"type":"bar","name":"USC00303773","marker":{"color":"rgba(38,130,142,1)","line":{"color":"rgba(38,130,142,1)"}},"textfont":{"color":"rgba(38,130,142,1)"},"error_y":{"color":"rgba(38,130,142,1)"},"error_x":{"color":"rgba(38,130,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["US1NYCY0002"],"y":[1074],"type":"bar","name":"US1NYCY0002","marker":{"color":"rgba(35,137,142,1)","line":{"color":"rgba(35,137,142,1)"}},"textfont":{"color":"rgba(35,137,142,1)"},"error_y":{"color":"rgba(35,137,142,1)"},"error_x":{"color":"rgba(35,137,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00306196"],"y":[1075],"type":"bar","name":"USC00306196","marker":{"color":"rgba(33,144,141,1)","line":{"color":"rgba(33,144,141,1)"}},"textfont":{"color":"rgba(33,144,141,1)"},"error_y":{"color":"rgba(33,144,141,1)"},"error_x":{"color":"rgba(33,144,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00301625"],"y":[1079],"type":"bar","name":"USC00301625","marker":{"color":"rgba(31,151,139,1)","line":{"color":"rgba(31,151,139,1)"}},"textfont":{"color":"rgba(31,151,139,1)"},"error_y":{"color":"rgba(31,151,139,1)"},"error_x":{"color":"rgba(31,151,139,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303851"],"y":[1082],"type":"bar","name":"USC00303851","marker":{"color":"rgba(31,158,137,1)","line":{"color":"rgba(31,158,137,1)"}},"textfont":{"color":"rgba(31,158,137,1)"},"error_y":{"color":"rgba(31,158,137,1)"},"error_x":{"color":"rgba(31,158,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00300321"],"y":[1083],"type":"bar","name":"USC00300321","marker":{"color":"rgba(33,165,133,1)","line":{"color":"rgba(33,165,133,1)"}},"textfont":{"color":"rgba(33,165,133,1)"},"error_y":{"color":"rgba(33,165,133,1)"},"error_x":{"color":"rgba(33,165,133,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["US1NYCR0003"],"y":[1084],"type":"bar","name":"US1NYCR0003","marker":{"color":"rgba(38,172,130,1)","line":{"color":"rgba(38,172,130,1)"}},"textfont":{"color":"rgba(38,172,130,1)"},"error_y":{"color":"rgba(38,172,130,1)"},"error_x":{"color":"rgba(38,172,130,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00300785"],"y":[1086],"type":"bar","name":"USC00300785","marker":{"color":"rgba(46,179,124,1)","line":{"color":"rgba(46,179,124,1)"}},"textfont":{"color":"rgba(46,179,124,1)"},"error_y":{"color":"rgba(46,179,124,1)"},"error_x":{"color":"rgba(46,179,124,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00302036"],"y":[1095],"type":"bar","name":"USC00302036","marker":{"color":"rgba(57,185,119,1)","line":{"color":"rgba(57,185,119,1)"}},"textfont":{"color":"rgba(57,185,119,1)"},"error_y":{"color":"rgba(57,185,119,1)"},"error_x":{"color":"rgba(57,185,119,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00308962"],"y":[1095],"type":"bar","name":"USC00308962","marker":{"color":"rgba(70,192,111,1)","line":{"color":"rgba(70,192,111,1)"}},"textfont":{"color":"rgba(70,192,111,1)"},"error_y":{"color":"rgba(70,192,111,1)"},"error_x":{"color":"rgba(70,192,111,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00064758"],"y":[1100],"type":"bar","name":"USW00064758","marker":{"color":"rgba(85,197,104,1)","line":{"color":"rgba(85,197,104,1)"}},"textfont":{"color":"rgba(85,197,104,1)"},"error_y":{"color":"rgba(85,197,104,1)"},"error_x":{"color":"rgba(85,197,104,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304555"],"y":[1111],"type":"bar","name":"USC00304555","marker":{"color":"rgba(101,203,94,1)","line":{"color":"rgba(101,203,94,1)"}},"textfont":{"color":"rgba(101,203,94,1)"},"error_y":{"color":"rgba(101,203,94,1)"},"error_x":{"color":"rgba(101,203,94,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00307705"],"y":[1115],"type":"bar","name":"USC00307705","marker":{"color":"rgba(118,208,84,1)","line":{"color":"rgba(118,208,84,1)"}},"textfont":{"color":"rgba(118,208,84,1)"},"error_y":{"color":"rgba(118,208,84,1)"},"error_x":{"color":"rgba(118,208,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00304102"],"y":[1122],"type":"bar","name":"USC00304102","marker":{"color":"rgba(137,213,72,1)","line":{"color":"rgba(137,213,72,1)"}},"textfont":{"color":"rgba(137,213,72,1)"},"error_y":{"color":"rgba(137,213,72,1)"},"error_x":{"color":"rgba(137,213,72,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303961"],"y":[1130],"type":"bar","name":"USC00303961","marker":{"color":"rgba(156,217,60,1)","line":{"color":"rgba(156,217,60,1)"}},"textfont":{"color":"rgba(156,217,60,1)"},"error_y":{"color":"rgba(156,217,60,1)"},"error_x":{"color":"rgba(156,217,60,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00094740"],"y":[1131],"type":"bar","name":"USW00094740","marker":{"color":"rgba(176,221,47,1)","line":{"color":"rgba(176,221,47,1)"}},"textfont":{"color":"rgba(176,221,47,1)"},"error_y":{"color":"rgba(176,221,47,1)"},"error_x":{"color":"rgba(176,221,47,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["US1NYOD0007"],"y":[1137],"type":"bar","name":"US1NYOD0007","marker":{"color":"rgba(196,224,34,1)","line":{"color":"rgba(196,224,34,1)"}},"textfont":{"color":"rgba(196,224,34,1)"},"error_y":{"color":"rgba(196,224,34,1)"},"error_x":{"color":"rgba(196,224,34,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USW00054773"],"y":[1162],"type":"bar","name":"USW00054773","marker":{"color":"rgba(216,226,25,1)","line":{"color":"rgba(216,226,25,1)"}},"textfont":{"color":"rgba(216,226,25,1)"},"error_y":{"color":"rgba(216,226,25,1)"},"error_x":{"color":"rgba(216,226,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00305512"],"y":[1180],"type":"bar","name":"USC00305512","marker":{"color":"rgba(235,229,27,1)","line":{"color":"rgba(235,229,27,1)"}},"textfont":{"color":"rgba(235,229,27,1)"},"error_y":{"color":"rgba(235,229,27,1)"},"error_x":{"color":"rgba(235,229,27,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["USC00303025"],"y":[1243],"type":"bar","name":"USC00303025","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="boxplot-of-prcp-of-weather-stations-that-have-average-prcp-over-100mm-in-2000" class="section level3">
 <h3>Boxplot of prcp of weather stations that have average prcp over 100mm in 2000</h3>
-<pre class="r"><code>ny_noaa %&gt;%
-  separate(date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;), sep = &quot;\\-&quot;) %&gt;%
-  filter(year == &quot;2000&quot;, prcp &gt; 0) %&gt;%
-  group_by(id) %&gt;%
-  mutate(mean_prcp = mean(prcp)) %&gt;%
-  filter(mean_prcp &gt; 100) %&gt;%
-  mutate(id = fct_reorder(id, mean_prcp)) %&gt;%
-  plot_ly(y = ~prcp, color = ~id, type = &quot;box&quot;, colors = &quot;viridis&quot;)</code></pre>
-<div id="htmlwidget-efbe59622f03c2c1dfe1" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-efbe59622f03c2c1dfe1">{"x":{"visdat":{"a9c89824482":["function () ","plotlyVisDat"]},"cur_data":"a9c89824482","attrs":{"a9c89824482":{"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"prcp"},"xaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(68,1,84,0.5)","y":[3,3,43,145,13,119,25,43,18,211,97,38,13,3,18,160,165,10,152,13,84,140,23,84,315,13,203,23,74,46,89,25,36,191,66,175,89,5,61,33,124,5,5,71,53,224,3,3,752,20,239,5,132,20,71,193,117,495,8,20,142,221,30,64,20,1433,208,99,10,99,46,1115,147,41,38,345,434,5,64,71,218,69,124,46,13,716,117,18,99,150,5,5,18],"type":"box","name":"USC00300641","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(71,14,97,0.5)","y":[25,41,239,3,36,86,56,297,203,13,25,249,30,5,109,3,18,66,343,262,36,51,366,102,43,97,30,119,48,147,8,10,246,122,5,46,56,5,13,10,168,18,208,109,46,107,8,13,28,56,56,3,165,41,43,1283,213,15,109,71,99,89,30,99,826,234,69,81,201,46,8,8,56,41,434,30,71,46,15,114,86,41,363,25,51,8,5,51,196,3,41,89,109,41,69,3,53,3,208,36,3,8,23,81,191,483,33,8,361],"type":"box","name":"USC00301095","marker":{"color":"rgba(71,14,97,1)","line":{"color":"rgba(71,14,97,1)"}},"line":{"color":"rgba(71,14,97,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(72,27,109,0.5)","y":[318,505,13,178,185,241,178,140,178,51,305,56,66,64,533,127,224,203,86,114,102,152,160,102,107,236,155,254,635,251,508,51],"type":"box","name":"USC00301173","marker":{"color":"rgba(72,27,109,1)","line":{"color":"rgba(72,27,109,1)"}},"line":{"color":"rgba(72,27,109,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(72,37,118,0.5)","y":[69,386,81,320,30,74,28,36,363,8,15,23,28,8,53,363,180,119,10,142,160,18,61,36,323,56,236,56,411,41,28,23,89,538,58,5,318,15,10,43,46,86,168,183,36,38,76,23,51,254,117,28,307,185,226,89,28,41,23,33,213,58,173,36,61,701,147,23,284,221,36,71,56,20,249,48,180,66,99,41,142,231,168,18,315,15,28,38,168,51,23,36,41,114,104,881,399,117,356,320,15,15,74,5,333,224,61,46,117,36,36,277,23,15,175,84,224,15,41,160,53,71,25,20,10,109,5,15,8,56,20,163,259,56,455,5,15,112,20,23,203,109],"type":"box","name":"USC00301436","marker":{"color":"rgba(72,37,118,1)","line":{"color":"rgba(72,37,118,1)"}},"line":{"color":"rgba(72,37,118,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(70,48,126,0.5)","y":[51,432,102,102,254,102,25,20,51,25,102,152,203,25,51,102,51,25,51,76,457,51,305,229,25,152,25,102,25,30,254,152,25,140,102,137,25,25,25,361,25,51,25,244,51,25,51,51,76,51,152,142,66,229,25,66,51,203,41,813,193,25,51,51,254,127,163,36,305,51,330,157,66,71,25,51,102,25,51,191,51,81,91,102,269,51,25,25,127,25,76,76,279,102,76,127,203,102,25,76,203,76,102,51],"type":"box","name":"USC00302047","marker":{"color":"rgba(70,48,126,1)","line":{"color":"rgba(70,48,126,1)"}},"line":{"color":"rgba(70,48,126,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(68,59,132,0.5)","y":[30,76,254,20,71,46,399,226,5,3,5,23,150,114,5,3,193,30,5,3,124,140,8,8,5,84,3,384,23,277,64,353,140,13,10,3,188,102,229,99,140,18,25,282,81,25,23,79,5,3,20,13,41,137,152,23,257,208,168,155,48,117,61,36,358,36,71,1359,269,28,130,15,8,58,135,5,102,30,5,135,130,10,28,1003,51,8,137,53,198,18,5,3,30,64,28,401,43,5,86,51,3,94,89,20,79,5,5,411,46,38,8,43,86,274,8,86,74,132,8,84,165,53,112,3,231,3,53,28,3,8,56,107,66,351,790,30,457],"type":"box","name":"USC00302366","marker":{"color":"rgba(68,59,132,1)","line":{"color":"rgba(68,59,132,1)"}},"line":{"color":"rgba(68,59,132,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(64,70,136,0.5)","y":[5,8,3,81,241,25,58,13,25,325,203,147,18,142,5,13,211,36,20,358,71,58,13,5,20,20,249,38,279,226,76,328,3,224,165,221,76,142,8,229,81,10,8,20,147,363,607,23,33,348],"type":"box","name":"USC00302582","marker":{"color":"rgba(64,70,136,1)","line":{"color":"rgba(64,70,136,1)"}},"line":{"color":"rgba(64,70,136,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(60,80,139,0.5)","y":[18,457,53,25,259,10,23,23,84,150,23,163,13,69,320,28,157,15,64,13,150,13,69,25,218,23,5,152,302,15,66,371,127,226,79,13,13,229,127,102,13,64,102,13,86,48,13,36,74,241,89,8,58,94,76,30,5,25,279,10,30,5,236,361,64,10,48,20,157,13,51,25,8,168,25,53,91,53,287,203,650,3,10,8,10,495,41,112,13,43,142,5,64,145,206,99,226,142,99,10,41,30,13,290,13,203,251,5,5,229,23,119,33,3,8,86,183,23,33,5,157,218,635,43,33,8,102],"type":"box","name":"USC00303284","marker":{"color":"rgba(60,80,139,1)","line":{"color":"rgba(60,80,139,1)"}},"line":{"color":"rgba(60,80,139,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(56,89,140,0.5)","y":[30,406,46,208,198,79,20,15,180,3,305,13,15,13,8,104,76,38,25,185,10,51,132,107,66,249,15,15,145,279,46,51,43,376,25,20,330,188,99,69,51,69,239,218,97,23,79,33,48,18,8,25,170,15,119,302,8,188,64,10,5,36,259,36,8,175,142,498,28,23,3,244,5,5,112,25,269,23,25,81,107,147,610,533,76,533,86,25,178,102,25,229,127,76,178,838,51,76,178,305,5,3,218,117,3,41,30,305,5,25,152,305,102,33,10,25,137,8,5,20,15,13,13,84,170,287,41,81,5,25,254],"type":"box","name":"USC00303319","marker":{"color":"rgba(56,89,140,1)","line":{"color":"rgba(56,89,140,1)"}},"line":{"color":"rgba(56,89,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(51,98,141,0.5)","y":[318,178,259,208,48,71,5,10,5,513,51,305,25,23,102,10,48,290,48,208,97,114,5,671,5,15,15,3,25,163,130,99,8,79,137,399,13,30,53,556,76,325,8,5,8,18,208],"type":"box","name":"USC00303464","marker":{"color":"rgba(51,98,141,1)","line":{"color":"rgba(51,98,141,1)"}},"line":{"color":"rgba(51,98,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(47,107,142,0.5)","y":[18,8,81,15,155,102,64,211,282,18,323,10,157,142,208,38,127,259,36,241,257,56,46,64,30,127,109,8,292,25,38,284,89,33,15,18,89,64,191,157,41,229,119,150,163,122,30,109,284,81,69,51,102,899,279,25,30,43,76,165,244,56,15,178,89,15,140,846,51,114,10,201,107,124,30,23,23,147,5,5,61,122,46,25,51,274,23,25,622,30,533,46,15,10,10,36,74,8,8,328,15,23,48,244,193,229,132,163,20,97,5,23,13,279,523,475,81,38,429],"type":"box","name":"USC00304731","marker":{"color":"rgba(47,107,142,1)","line":{"color":"rgba(47,107,142,1)"}},"line":{"color":"rgba(47,107,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(44,115,142,0.5)","y":[13,18,3,43,15,241,30,58,23,234,201,3,5,20,15,206,48,13,234,8,117,3,71,18,25,323,8,8,295,64,292,3,15,124,25,107,18,5,267,8,25,386,64,36,23,23,48,114,843,249,5,86,20,46,119,137,8,124,3,20,61,66,3,178,681,99,310,3,3,18,119,175,20,61,226,124,234,3,15,86,3,10,196,3,8,23,130,147,305,71,150,3,20,180,71,10,3,18,117,3,297,528,20,25,251],"type":"box","name":"USC00305276","marker":{"color":"rgba(44,115,142,1)","line":{"color":"rgba(44,115,142,1)"}},"line":{"color":"rgba(44,115,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(40,124,142,0.5)","y":[48,165,25,10,33,8,41,145,86,274,107,61,175,18,51,279,236,254,142,127,13,208,254,254,86,91,30,20,38,69,178,46,48,168,84,203,61,10,13,25,193,15,76,30,279,531,206,13,71,13,38,152,36,30,104,10,508,500,81,25,91,381,69,13,13,119,295,8,25,76,137,8,188,94,53,13,81,102,30,160,447,8,66,127,25,114,127,295,13,61,91,94,76,71,10,36,546,297,178,66],"type":"box","name":"USC00305310","marker":{"color":"rgba(40,124,142,1)","line":{"color":"rgba(40,124,142,1)"}},"line":{"color":"rgba(40,124,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(37,131,142,0.5)","y":[3,18,18,208,58,109,36,13,160,107,168,28,15,18,396,5,147,117,74,13,3,79,10,15,229,163,3,353,18,297,3,175,122,3,81,157,264,287,102,5,15,5,5,10,109,145,104,25,135,48,417,79,10,5,56,241,41,10,43,523,457,5,185,76,30,8,3,76,13,86,89,33,3,30,18,3,23,699,46,5,119,10,660,20,97,18,28,5,18,8,142,36,18,150,295,48,33,64,13,8,8,160,71,10,30,3,170,122,69,391,8,119,30,119,28,25,239,3,3,391,76,175,8,3,257,13,94,25,5,36,157,56,927,30,404,38],"type":"box","name":"USC00305426","marker":{"color":"rgba(37,131,142,1)","line":{"color":"rgba(37,131,142,1)"}},"line":{"color":"rgba(37,131,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(34,140,141,0.5)","y":[150,48,28,48,18,119,69,30,38,107,48,8,107,208,48,94,56,61,117,127,43,71,145,330,33,203,127,97,25,64,175,577,10,117,56,46,30,132,127,333,229,20,36,112,51,160,99,41,48,5,137,170,145,320,142,198,107,51,48,345,33,51,30,81,69,51,117,56,58,53,450,30,104,112,97,71],"type":"box","name":"USC00305679","marker":{"color":"rgba(34,140,141,1)","line":{"color":"rgba(34,140,141,1)"}},"line":{"color":"rgba(34,140,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(31,148,140,0.5)","y":[36,592,142,15,246,84,10,20,8,36,160,345,13,10,112,173,173,23,28,178,18,18,46,178,13,41,33,274,10,8,147,36,249,104,15,43,429,41,10,15,338,97,15,36,71,196,218,119,43,76,51,48,46,13,8,13,244,381,25,224,53,13,323,13,41,13,64,119,579,10,117,8,61,25,259,5,5,8,48,99,178,10,493,15,91,38,20,328,28,102,114,3,36,135,739,10,61,160,127,267,25,307,124,119,262,117,533,69,25,107,5,8,8,10,259],"type":"box","name":"USC00306062","marker":{"color":"rgba(31,148,140,1)","line":{"color":"rgba(31,148,140,1)"}},"line":{"color":"rgba(31,148,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(30,157,137,0.5)","y":[8,5,97,13,127,89,41,203,168,71,8,5,173,79,229,36,33,117,8,84,8,30,345,23,8,231,15,71,23,109,170,5,183,25,472,20,150,10,5,5,66,5,277,137,41,81,102,20,180,168,112,3,23,714,389,61,56,5,3,51,99,36,109,28,97,18,53,259,442,170,74,13,3,33,226,185,8,145,25,66,13,218,234,15,58,58,15,25,185,216,168,193,30,3,28,13,104,43,15,236,218,234,5,89,25,91,5,13,20,15,76,36,170,373,41,5,335],"type":"box","name":"USC00306820","marker":{"color":"rgba(30,157,137,1)","line":{"color":"rgba(30,157,137,1)"}},"line":{"color":"rgba(30,157,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(32,164,134,0.5)","y":[10,127,94,152,279,279,229,51,51,25,330,330,51,13,38,318,76,10,64,152,64,25,168,76,38,25,51,10,64,140,89,325,178,127,114,25,76,102,97,51,241,13,117,25,140,13,203,13,76,13,51,79,356,76,89,25,203,38,127,18,13,381,178,20,5,51,13,84,264,76,152,102,51,10,102,15,76,51],"type":"box","name":"USC00306839","marker":{"color":"rgba(32,164,134,1)","line":{"color":"rgba(32,164,134,1)"}},"line":{"color":"rgba(32,164,134,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(38,173,129,0.5)","y":[13,10,56,20,213,36,58,5,330,3,135,157,18,8,152,152,224,84,5,74,10,5,33,5,356,20,279,30,76,213,46,8,76,20,20,142,5,5,140,10,5,411,43,104,25,13,8,38,28,361,28,53,112,229,178,91,8,25,178,36,13,66,927,279,71,76,10,74,84,119,3,109,254,10,711,655,3,10,5,51,51,3,38,333,13,104,102,53,348,152,5,15,135,137,170,28,457,25,102,76,198,5,30,15,196,226,137,5,89,18,5,13,25,107,330,330,356,10,305],"type":"box","name":"USC00307035","marker":{"color":"rgba(38,173,129,1)","line":{"color":"rgba(38,173,129,1)"}},"line":{"color":"rgba(38,173,129,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(49,181,123,0.5)","y":[41,516,79,25,249,112,127,69,130,53,69,25,254,71,246,178,160,102,160,76,343,142,25,86,140,160,277,142,13,147,152,15,168,127,8,3,142,3,46,30,10,94,340,89,124,25,8,249,135,36,371,86,64,5,122,353,71,226,33,8,33,76,79,76,188,69,10,5,36],"type":"box","name":"USC00307195","marker":{"color":"rgba(49,181,123,1)","line":{"color":"rgba(49,181,123,1)"}},"line":{"color":"rgba(49,181,123,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(63,188,115,0.5)","y":[5,5,8,10,8,236,43,18,38,23,165,147,30,25,5,246,71,10,236,8,89,5,66,8,25,30,5,351,8,5,292,89,394,8,132,25,86,15,8,135,25,36,386,15,81,15,15,10,267,33,76,119,193,185,91,8,30,198,23,64,10,56,861,470,18,58,10,104,94,145,89,147,5,28,422,66,51,640,23,15,84,15,5,8,38,104,25,81,274,30,8,30,157,76,5,193,724,10,8,64,168,122,343,15,30,81,20,173,218,180,30,132,28,320,28,23,130,485,394,30,358],"type":"box","name":"USC00307274","marker":{"color":"rgba(63,188,115,1)","line":{"color":"rgba(63,188,115,1)"}},"line":{"color":"rgba(63,188,115,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(79,196,106,0.5)","y":[5,203,1605,20,41,13,244,150,15,152,41,239,8,51,5,53,10,10,508,53,290,51,25,216,8,66,25,89,25,46,135,102,15,693,23,18,10,38,3,137,64,36,114,277,130,117,43,196,30,25,851,5,163,147,36,18,20,3,229,8,71,183,76,33,5,76,978,43,241,114,61,84,66,36,36,318,25,18,137,15,89,43,48,612,48,5,33,3,13,53,18,211,56,368,15,3,43,140,33,13,10,3,66,371,224,91,58,249,84,25,10,10,71,208,122,145,15,10,51,274],"type":"box","name":"USC00307587","marker":{"color":"rgba(79,196,106,1)","line":{"color":"rgba(79,196,106,1)"}},"line":{"color":"rgba(79,196,106,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(97,202,96,0.5)","y":[25,330,5,185,13,203,135,216,330,427,13,330,140,25,69,135,193,102,28,51,51,686,102,25,20,61,191,114,3,305,25,51,76,175,183,25,770,51,102,340,104,86,13,254,330,330,513,152,249,53,183,23,208,8,102,13,81,13,13,127,533,178,409,25,25,178,25,25,51,46,114,76,305,5,152,25,20,305,142,264,51,20,152],"type":"box","name":"USC00307633","marker":{"color":"rgba(97,202,96,1)","line":{"color":"rgba(97,202,96,1)"}},"line":{"color":"rgba(97,202,96,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(117,208,84,0.5)","y":[5,25,5,41,8,18,267,43,5,41,221,175,3,15,244,79,5,211,130,69,10,3,36,3,358,5,279,10,28,297,38,8,5,239,33,64,5,15,191,13,36,452,36,23,13,18,3,20,30,279,46,89,196,170,183,79,13,64,236,30,38,3,8,114,1168,3,203,53,127,5,5,165,104,104,13,8,30,13,13,1781,775,234,18,279,25,3,201,102,76,13,10,104,5,8,5,516,41,36,155,196,25,3,660,173,25,20,221,203,135,3,279,20,64,5,33,292,5,89,114,178,5,279,132,5,170,3,51,274,109,8,10,15,36,102,15,394,617,10,8,259,3],"type":"box","name":"USC00307721","marker":{"color":"rgba(117,208,84,1)","line":{"color":"rgba(117,208,84,1)"}},"line":{"color":"rgba(117,208,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(139,214,70,0.5)","y":[8,338,91,305,66,13,64,41,191,8,287,173,132,25,241,13,157,13,234,30,170,269,81,38,269,53,267,41,56,119,211,81,18,25,10,8,84,203,137,236,241,58,13,13,160,30,5,102,104,5,71,267,109,157,69,152,211,89,343,20,71,38,8,307,64,183,89,513,89,127,305,46,33,10,272,107,33,25,119,300,114,170,81,157,152,13,18,69,15,13,13,15,160,13,18,20,64,488,56],"type":"box","name":"USC00308586","marker":{"color":"rgba(139,214,70,1)","line":{"color":"rgba(139,214,70,1)"}},"line":{"color":"rgba(139,214,70,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(162,218,55,0.5)","y":[20,127,196,38,5,25,135,137,18,3,107,69,178,15,81,175,8,5,84,330,18,208,69,99,97,18,124,64,780,267,20,127,3,30,216,76,3,81,33,33,251,15,135,102,193,94,3,18,13,198,94,8,155,18,18,681,5,130,231,64,117,8,246,109,5,8,229,81,8,3,10,10,681,48,25,102,5,41,30,170,76,3,28,465,5,3,130,76,99,264,241,36,274,478,86,5,224,46,48,41,229,5,8,51,152,147,28,10,109,43,10,178,23,10,150,18,10,23,41,71,292,419,30,97],"type":"box","name":"USC00308746","marker":{"color":"rgba(162,218,55,1)","line":{"color":"rgba(162,218,55,1)"}},"line":{"color":"rgba(162,218,55,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(185,222,40,0.5)","y":[58,25,147,56,41,38,84,157,46,25,13,102,196,241,25,94,8,84,10,15,10,389,241,38,13,272,8,122,102,25,8,229,28,64,513,38,155,10,5,13,38,66,239,38,206,107,262,135,74,5,71,94,64,56,48,686,366,18,76,8,56,130,38,66,25,18,58,3,254,229,124,104,5,18,404,89,107,10,8,20,343,277,36,23,236,5,137,102,41,8,419,18,165,178,686,10,13,99,89,8,46,28,206,241,173,157,38,122,76,25,145,363,399,38,25,218],"type":"box","name":"USC00308906","marker":{"color":"rgba(185,222,40,1)","line":{"color":"rgba(185,222,40,1)"}},"line":{"color":"rgba(185,222,40,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(209,225,28,0.5)","y":[147,25,279,48,41,53,109,203,41,5,224,279,71,10,81,43,373,13,241,307,119,28,119,61,18,15,173,15,335,30,122,15,5,23,30,8,76,38,76,25,216,114,74,13,18,173,43,51,23,5,777,264,15,64,5,13,71,94,76,216,13,127,10,18,41,363,8,38,191,432,76,10,5,86,25,127,25,119,267,25,38,267,25,5,211,114,226,86,478,145,152,8,699,13,51,48,46,23,246,234,203,15,109,48,249,58,10,25,8,191,279,394,38,348],"type":"box","name":"USC00309292","marker":{"color":"rgba(209,225,28,1)","line":{"color":"rgba(209,225,28,1)"}},"line":{"color":"rgba(209,225,28,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(232,228,25,0.5)","y":[13,66,165,56,48,25,38,249,5,137,10,10,8,18,163,36,8,272,5,89,211,8,51,13,335,71,5,249,76,56,76,13,107,150,61,8,356,109,13,89,5,51,173,41,102,13,38,13,135,163,122,170,234,89,25,20,229,249,25,330,15,953,25,196,8,163,48,102,66,201,76,8,25,43,25,20,33,947,30,127,25,23,384,102,20,180,521,69,132,64,132,259,109,61,30,254,81,183,23,13,25,191,69,152,91,25,20,114,56,33,201,23,137,15,18,13,33,8,41,74,373,333,69,163],"type":"box","name":"USC00309303","marker":{"color":"rgba(232,228,25,1)","line":{"color":"rgba(232,228,25,1)"}},"line":{"color":"rgba(232,228,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(253,231,37,0.5)","y":[23,48,170,64,53,28,43,351,10,198,10,8,15,135,53,10,183,8,33,79,155,33,5,74,259,20,292,13,81,361,8,33,175,305,64,150,13,13,257,79,13,56,51,170,41,130,51,274,114,130,114,15,8,25,51,69,188,10,109,1140,366,5,102,94,135,114,84,109,10,18,605,25,86,28,51,25,69,58,8,635,36,91,79,33,8,43,58,13,312,69,13,5,43,3,56,249,51,165,91,5,13,41,53,30,3,81,15,38,13,10,48,99,310,8,61,18,389],"type":"box","name":"USC00309516","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div id="htmlwidget-59a5937edf245caaae03" style="width:576px;height:460.8px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-59a5937edf245caaae03">{"x":{"visdat":{"45747dd81a":["function () ","plotlyVisDat"]},"cur_data":"45747dd81a","attrs":{"45747dd81a":{"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"prcp"},"xaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(68,1,84,0.5)","y":[3,3,43,145,13,119,25,43,18,211,97,38,13,3,18,160,165,10,152,13,84,140,23,84,315,13,203,23,74,46,89,25,36,191,66,175,89,5,61,33,124,5,5,71,53,224,3,3,752,20,239,5,132,20,71,193,117,495,8,20,142,221,30,64,20,1433,208,99,10,99,46,1115,147,41,38,345,434,5,64,71,218,69,124,46,13,716,117,18,99,150,5,5,18],"type":"box","name":"USC00300641","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(71,14,97,0.5)","y":[25,41,239,3,36,86,56,297,203,13,25,249,30,5,109,3,18,66,343,262,36,51,366,102,43,97,30,119,48,147,8,10,246,122,5,46,56,5,13,10,168,18,208,109,46,107,8,13,28,56,56,3,165,41,43,1283,213,15,109,71,99,89,30,99,826,234,69,81,201,46,8,8,56,41,434,30,71,46,15,114,86,41,363,25,51,8,5,51,196,3,41,89,109,41,69,3,53,3,208,36,3,8,23,81,191,483,33,8,361],"type":"box","name":"USC00301095","marker":{"color":"rgba(71,14,97,1)","line":{"color":"rgba(71,14,97,1)"}},"line":{"color":"rgba(71,14,97,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(72,27,109,0.5)","y":[318,505,13,178,185,241,178,140,178,51,305,56,66,64,533,127,224,203,86,114,102,152,160,102,107,236,155,254,635,251,508,51],"type":"box","name":"USC00301173","marker":{"color":"rgba(72,27,109,1)","line":{"color":"rgba(72,27,109,1)"}},"line":{"color":"rgba(72,27,109,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(72,37,118,0.5)","y":[69,386,81,320,30,74,28,36,363,8,15,23,28,8,53,363,180,119,10,142,160,18,61,36,323,56,236,56,411,41,28,23,89,538,58,5,318,15,10,43,46,86,168,183,36,38,76,23,51,254,117,28,307,185,226,89,28,41,23,33,213,58,173,36,61,701,147,23,284,221,36,71,56,20,249,48,180,66,99,41,142,231,168,18,315,15,28,38,168,51,23,36,41,114,104,881,399,117,356,320,15,15,74,5,333,224,61,46,117,36,36,277,23,15,175,84,224,15,41,160,53,71,25,20,10,109,5,15,8,56,20,163,259,56,455,5,15,112,20,23,203,109],"type":"box","name":"USC00301436","marker":{"color":"rgba(72,37,118,1)","line":{"color":"rgba(72,37,118,1)"}},"line":{"color":"rgba(72,37,118,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(70,48,126,0.5)","y":[51,432,102,102,254,102,25,20,51,25,102,152,203,25,51,102,51,25,51,76,457,51,305,229,25,152,25,102,25,30,254,152,25,140,102,137,25,25,25,361,25,51,25,244,51,25,51,51,76,51,152,142,66,229,25,66,51,203,41,813,193,25,51,51,254,127,163,36,305,51,330,157,66,71,25,51,102,25,51,191,51,81,91,102,269,51,25,25,127,25,76,76,279,102,76,127,203,102,25,76,203,76,102,51],"type":"box","name":"USC00302047","marker":{"color":"rgba(70,48,126,1)","line":{"color":"rgba(70,48,126,1)"}},"line":{"color":"rgba(70,48,126,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(68,59,132,0.5)","y":[30,76,254,20,71,46,399,226,5,3,5,23,150,114,5,3,193,30,5,3,124,140,8,8,5,84,3,384,23,277,64,353,140,13,10,3,188,102,229,99,140,18,25,282,81,25,23,79,5,3,20,13,41,137,152,23,257,208,168,155,48,117,61,36,358,36,71,1359,269,28,130,15,8,58,135,5,102,30,5,135,130,10,28,1003,51,8,137,53,198,18,5,3,30,64,28,401,43,5,86,51,3,94,89,20,79,5,5,411,46,38,8,43,86,274,8,86,74,132,8,84,165,53,112,3,231,3,53,28,3,8,56,107,66,351,790,30,457],"type":"box","name":"USC00302366","marker":{"color":"rgba(68,59,132,1)","line":{"color":"rgba(68,59,132,1)"}},"line":{"color":"rgba(68,59,132,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(64,70,136,0.5)","y":[5,8,3,81,241,25,58,13,25,325,203,147,18,142,5,13,211,36,20,358,71,58,13,5,20,20,249,38,279,226,76,328,3,224,165,221,76,142,8,229,81,10,8,20,147,363,607,23,33,348],"type":"box","name":"USC00302582","marker":{"color":"rgba(64,70,136,1)","line":{"color":"rgba(64,70,136,1)"}},"line":{"color":"rgba(64,70,136,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(60,80,139,0.5)","y":[18,457,53,25,259,10,23,23,84,150,23,163,13,69,320,28,157,15,64,13,150,13,69,25,218,23,5,152,302,15,66,371,127,226,79,13,13,229,127,102,13,64,102,13,86,48,13,36,74,241,89,8,58,94,76,30,5,25,279,10,30,5,236,361,64,10,48,20,157,13,51,25,8,168,25,53,91,53,287,203,650,3,10,8,10,495,41,112,13,43,142,5,64,145,206,99,226,142,99,10,41,30,13,290,13,203,251,5,5,229,23,119,33,3,8,86,183,23,33,5,157,218,635,43,33,8,102],"type":"box","name":"USC00303284","marker":{"color":"rgba(60,80,139,1)","line":{"color":"rgba(60,80,139,1)"}},"line":{"color":"rgba(60,80,139,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(56,89,140,0.5)","y":[30,406,46,208,198,79,20,15,180,3,305,13,15,13,8,104,76,38,25,185,10,51,132,107,66,249,15,15,145,279,46,51,43,376,25,20,330,188,99,69,51,69,239,218,97,23,79,33,48,18,8,25,170,15,119,302,8,188,64,10,5,36,259,36,8,175,142,498,28,23,3,244,5,5,112,25,269,23,25,81,107,147,610,533,76,533,86,25,178,102,25,229,127,76,178,838,51,76,178,305,5,3,218,117,3,41,30,305,5,25,152,305,102,33,10,25,137,8,5,20,15,13,13,84,170,287,41,81,5,25,254],"type":"box","name":"USC00303319","marker":{"color":"rgba(56,89,140,1)","line":{"color":"rgba(56,89,140,1)"}},"line":{"color":"rgba(56,89,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(51,98,141,0.5)","y":[318,178,259,208,48,71,5,10,5,513,51,305,25,23,102,10,48,290,48,208,97,114,5,671,5,15,15,3,25,163,130,99,8,79,137,399,13,30,53,556,76,325,8,5,8,18,208],"type":"box","name":"USC00303464","marker":{"color":"rgba(51,98,141,1)","line":{"color":"rgba(51,98,141,1)"}},"line":{"color":"rgba(51,98,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(47,107,142,0.5)","y":[18,8,81,15,155,102,64,211,282,18,323,10,157,142,208,38,127,259,36,241,257,56,46,64,30,127,109,8,292,25,38,284,89,33,15,18,89,64,191,157,41,229,119,150,163,122,30,109,284,81,69,51,102,899,279,25,30,43,76,165,244,56,15,178,89,15,140,846,51,114,10,201,107,124,30,23,23,147,5,5,61,122,46,25,51,274,23,25,622,30,533,46,15,10,10,36,74,8,8,328,15,23,48,244,193,229,132,163,20,97,5,23,13,279,523,475,81,38,429],"type":"box","name":"USC00304731","marker":{"color":"rgba(47,107,142,1)","line":{"color":"rgba(47,107,142,1)"}},"line":{"color":"rgba(47,107,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(44,115,142,0.5)","y":[13,18,3,43,15,241,30,58,23,234,201,3,5,20,15,206,48,13,234,8,117,3,71,18,25,323,8,8,295,64,292,3,15,124,25,107,18,5,267,8,25,386,64,36,23,23,48,114,843,249,5,86,20,46,119,137,8,124,3,20,61,66,3,178,681,99,310,3,3,18,119,175,20,61,226,124,234,3,15,86,3,10,196,3,8,23,130,147,305,71,150,3,20,180,71,10,3,18,117,3,297,528,20,25,251],"type":"box","name":"USC00305276","marker":{"color":"rgba(44,115,142,1)","line":{"color":"rgba(44,115,142,1)"}},"line":{"color":"rgba(44,115,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(40,124,142,0.5)","y":[48,165,25,10,33,8,41,145,86,274,107,61,175,18,51,279,236,254,142,127,13,208,254,254,86,91,30,20,38,69,178,46,48,168,84,203,61,10,13,25,193,15,76,30,279,531,206,13,71,13,38,152,36,30,104,10,508,500,81,25,91,381,69,13,13,119,295,8,25,76,137,8,188,94,53,13,81,102,30,160,447,8,66,127,25,114,127,295,13,61,91,94,76,71,10,36,546,297,178,66],"type":"box","name":"USC00305310","marker":{"color":"rgba(40,124,142,1)","line":{"color":"rgba(40,124,142,1)"}},"line":{"color":"rgba(40,124,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(37,131,142,0.5)","y":[3,18,18,208,58,109,36,13,160,107,168,28,15,18,396,5,147,117,74,13,3,79,10,15,229,163,3,353,18,297,3,175,122,3,81,157,264,287,102,5,15,5,5,10,109,145,104,25,135,48,417,79,10,5,56,241,41,10,43,523,457,5,185,76,30,8,3,76,13,86,89,33,3,30,18,3,23,699,46,5,119,10,660,20,97,18,28,5,18,8,142,36,18,150,295,48,33,64,13,8,8,160,71,10,30,3,170,122,69,391,8,119,30,119,28,25,239,3,3,391,76,175,8,3,257,13,94,25,5,36,157,56,927,30,404,38],"type":"box","name":"USC00305426","marker":{"color":"rgba(37,131,142,1)","line":{"color":"rgba(37,131,142,1)"}},"line":{"color":"rgba(37,131,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(34,140,141,0.5)","y":[150,48,28,48,18,119,69,30,38,107,48,8,107,208,48,94,56,61,117,127,43,71,145,330,33,203,127,97,25,64,175,577,10,117,56,46,30,132,127,333,229,20,36,112,51,160,99,41,48,5,137,170,145,320,142,198,107,51,48,345,33,51,30,81,69,51,117,56,58,53,450,30,104,112,97,71],"type":"box","name":"USC00305679","marker":{"color":"rgba(34,140,141,1)","line":{"color":"rgba(34,140,141,1)"}},"line":{"color":"rgba(34,140,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(31,148,140,0.5)","y":[36,592,142,15,246,84,10,20,8,36,160,345,13,10,112,173,173,23,28,178,18,18,46,178,13,41,33,274,10,8,147,36,249,104,15,43,429,41,10,15,338,97,15,36,71,196,218,119,43,76,51,48,46,13,8,13,244,381,25,224,53,13,323,13,41,13,64,119,579,10,117,8,61,25,259,5,5,8,48,99,178,10,493,15,91,38,20,328,28,102,114,3,36,135,739,10,61,160,127,267,25,307,124,119,262,117,533,69,25,107,5,8,8,10,259],"type":"box","name":"USC00306062","marker":{"color":"rgba(31,148,140,1)","line":{"color":"rgba(31,148,140,1)"}},"line":{"color":"rgba(31,148,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(30,157,137,0.5)","y":[8,5,97,13,127,89,41,203,168,71,8,5,173,79,229,36,33,117,8,84,8,30,345,23,8,231,15,71,23,109,170,5,183,25,472,20,150,10,5,5,66,5,277,137,41,81,102,20,180,168,112,3,23,714,389,61,56,5,3,51,99,36,109,28,97,18,53,259,442,170,74,13,3,33,226,185,8,145,25,66,13,218,234,15,58,58,15,25,185,216,168,193,30,3,28,13,104,43,15,236,218,234,5,89,25,91,5,13,20,15,76,36,170,373,41,5,335],"type":"box","name":"USC00306820","marker":{"color":"rgba(30,157,137,1)","line":{"color":"rgba(30,157,137,1)"}},"line":{"color":"rgba(30,157,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(32,164,134,0.5)","y":[10,127,94,152,279,279,229,51,51,25,330,330,51,13,38,318,76,10,64,152,64,25,168,76,38,25,51,10,64,140,89,325,178,127,114,25,76,102,97,51,241,13,117,25,140,13,203,13,76,13,51,79,356,76,89,25,203,38,127,18,13,381,178,20,5,51,13,84,264,76,152,102,51,10,102,15,76,51],"type":"box","name":"USC00306839","marker":{"color":"rgba(32,164,134,1)","line":{"color":"rgba(32,164,134,1)"}},"line":{"color":"rgba(32,164,134,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(38,173,129,0.5)","y":[13,10,56,20,213,36,58,5,330,3,135,157,18,8,152,152,224,84,5,74,10,5,33,5,356,20,279,30,76,213,46,8,76,20,20,142,5,5,140,10,5,411,43,104,25,13,8,38,28,361,28,53,112,229,178,91,8,25,178,36,13,66,927,279,71,76,10,74,84,119,3,109,254,10,711,655,3,10,5,51,51,3,38,333,13,104,102,53,348,152,5,15,135,137,170,28,457,25,102,76,198,5,30,15,196,226,137,5,89,18,5,13,25,107,330,330,356,10,305],"type":"box","name":"USC00307035","marker":{"color":"rgba(38,173,129,1)","line":{"color":"rgba(38,173,129,1)"}},"line":{"color":"rgba(38,173,129,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(49,181,123,0.5)","y":[41,516,79,25,249,112,127,69,130,53,69,25,254,71,246,178,160,102,160,76,343,142,25,86,140,160,277,142,13,147,152,15,168,127,8,3,142,3,46,30,10,94,340,89,124,25,8,249,135,36,371,86,64,5,122,353,71,226,33,8,33,76,79,76,188,69,10,5,36],"type":"box","name":"USC00307195","marker":{"color":"rgba(49,181,123,1)","line":{"color":"rgba(49,181,123,1)"}},"line":{"color":"rgba(49,181,123,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(63,188,115,0.5)","y":[5,5,8,10,8,236,43,18,38,23,165,147,30,25,5,246,71,10,236,8,89,5,66,8,25,30,5,351,8,5,292,89,394,8,132,25,86,15,8,135,25,36,386,15,81,15,15,10,267,33,76,119,193,185,91,8,30,198,23,64,10,56,861,470,18,58,10,104,94,145,89,147,5,28,422,66,51,640,23,15,84,15,5,8,38,104,25,81,274,30,8,30,157,76,5,193,724,10,8,64,168,122,343,15,30,81,20,173,218,180,30,132,28,320,28,23,130,485,394,30,358],"type":"box","name":"USC00307274","marker":{"color":"rgba(63,188,115,1)","line":{"color":"rgba(63,188,115,1)"}},"line":{"color":"rgba(63,188,115,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(79,196,106,0.5)","y":[5,203,1605,20,41,13,244,150,15,152,41,239,8,51,5,53,10,10,508,53,290,51,25,216,8,66,25,89,25,46,135,102,15,693,23,18,10,38,3,137,64,36,114,277,130,117,43,196,30,25,851,5,163,147,36,18,20,3,229,8,71,183,76,33,5,76,978,43,241,114,61,84,66,36,36,318,25,18,137,15,89,43,48,612,48,5,33,3,13,53,18,211,56,368,15,3,43,140,33,13,10,3,66,371,224,91,58,249,84,25,10,10,71,208,122,145,15,10,51,274],"type":"box","name":"USC00307587","marker":{"color":"rgba(79,196,106,1)","line":{"color":"rgba(79,196,106,1)"}},"line":{"color":"rgba(79,196,106,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(97,202,96,0.5)","y":[25,330,5,185,13,203,135,216,330,427,13,330,140,25,69,135,193,102,28,51,51,686,102,25,20,61,191,114,3,305,25,51,76,175,183,25,770,51,102,340,104,86,13,254,330,330,513,152,249,53,183,23,208,8,102,13,81,13,13,127,533,178,409,25,25,178,25,25,51,46,114,76,305,5,152,25,20,305,142,264,51,20,152],"type":"box","name":"USC00307633","marker":{"color":"rgba(97,202,96,1)","line":{"color":"rgba(97,202,96,1)"}},"line":{"color":"rgba(97,202,96,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(117,208,84,0.5)","y":[5,25,5,41,8,18,267,43,5,41,221,175,3,15,244,79,5,211,130,69,10,3,36,3,358,5,279,10,28,297,38,8,5,239,33,64,5,15,191,13,36,452,36,23,13,18,3,20,30,279,46,89,196,170,183,79,13,64,236,30,38,3,8,114,1168,3,203,53,127,5,5,165,104,104,13,8,30,13,13,1781,775,234,18,279,25,3,201,102,76,13,10,104,5,8,5,516,41,36,155,196,25,3,660,173,25,20,221,203,135,3,279,20,64,5,33,292,5,89,114,178,5,279,132,5,170,3,51,274,109,8,10,15,36,102,15,394,617,10,8,259,3],"type":"box","name":"USC00307721","marker":{"color":"rgba(117,208,84,1)","line":{"color":"rgba(117,208,84,1)"}},"line":{"color":"rgba(117,208,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(139,214,70,0.5)","y":[8,338,91,305,66,13,64,41,191,8,287,173,132,25,241,13,157,13,234,30,170,269,81,38,269,53,267,41,56,119,211,81,18,25,10,8,84,203,137,236,241,58,13,13,160,30,5,102,104,5,71,267,109,157,69,152,211,89,343,20,71,38,8,307,64,183,89,513,89,127,305,46,33,10,272,107,33,25,119,300,114,170,81,157,152,13,18,69,15,13,13,15,160,13,18,20,64,488,56],"type":"box","name":"USC00308586","marker":{"color":"rgba(139,214,70,1)","line":{"color":"rgba(139,214,70,1)"}},"line":{"color":"rgba(139,214,70,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(162,218,55,0.5)","y":[20,127,196,38,5,25,135,137,18,3,107,69,178,15,81,175,8,5,84,330,18,208,69,99,97,18,124,64,780,267,20,127,3,30,216,76,3,81,33,33,251,15,135,102,193,94,3,18,13,198,94,8,155,18,18,681,5,130,231,64,117,8,246,109,5,8,229,81,8,3,10,10,681,48,25,102,5,41,30,170,76,3,28,465,5,3,130,76,99,264,241,36,274,478,86,5,224,46,48,41,229,5,8,51,152,147,28,10,109,43,10,178,23,10,150,18,10,23,41,71,292,419,30,97],"type":"box","name":"USC00308746","marker":{"color":"rgba(162,218,55,1)","line":{"color":"rgba(162,218,55,1)"}},"line":{"color":"rgba(162,218,55,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(185,222,40,0.5)","y":[58,25,147,56,41,38,84,157,46,25,13,102,196,241,25,94,8,84,10,15,10,389,241,38,13,272,8,122,102,25,8,229,28,64,513,38,155,10,5,13,38,66,239,38,206,107,262,135,74,5,71,94,64,56,48,686,366,18,76,8,56,130,38,66,25,18,58,3,254,229,124,104,5,18,404,89,107,10,8,20,343,277,36,23,236,5,137,102,41,8,419,18,165,178,686,10,13,99,89,8,46,28,206,241,173,157,38,122,76,25,145,363,399,38,25,218],"type":"box","name":"USC00308906","marker":{"color":"rgba(185,222,40,1)","line":{"color":"rgba(185,222,40,1)"}},"line":{"color":"rgba(185,222,40,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(209,225,28,0.5)","y":[147,25,279,48,41,53,109,203,41,5,224,279,71,10,81,43,373,13,241,307,119,28,119,61,18,15,173,15,335,30,122,15,5,23,30,8,76,38,76,25,216,114,74,13,18,173,43,51,23,5,777,264,15,64,5,13,71,94,76,216,13,127,10,18,41,363,8,38,191,432,76,10,5,86,25,127,25,119,267,25,38,267,25,5,211,114,226,86,478,145,152,8,699,13,51,48,46,23,246,234,203,15,109,48,249,58,10,25,8,191,279,394,38,348],"type":"box","name":"USC00309292","marker":{"color":"rgba(209,225,28,1)","line":{"color":"rgba(209,225,28,1)"}},"line":{"color":"rgba(209,225,28,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(232,228,25,0.5)","y":[13,66,165,56,48,25,38,249,5,137,10,10,8,18,163,36,8,272,5,89,211,8,51,13,335,71,5,249,76,56,76,13,107,150,61,8,356,109,13,89,5,51,173,41,102,13,38,13,135,163,122,170,234,89,25,20,229,249,25,330,15,953,25,196,8,163,48,102,66,201,76,8,25,43,25,20,33,947,30,127,25,23,384,102,20,180,521,69,132,64,132,259,109,61,30,254,81,183,23,13,25,191,69,152,91,25,20,114,56,33,201,23,137,15,18,13,33,8,41,74,373,333,69,163],"type":"box","name":"USC00309303","marker":{"color":"rgba(232,228,25,1)","line":{"color":"rgba(232,228,25,1)"}},"line":{"color":"rgba(232,228,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(253,231,37,0.5)","y":[23,48,170,64,53,28,43,351,10,198,10,8,15,135,53,10,183,8,33,79,155,33,5,74,259,20,292,13,81,361,8,33,175,305,64,150,13,13,257,79,13,56,51,170,41,130,51,274,114,130,114,15,8,25,51,69,188,10,109,1140,366,5,102,94,135,114,84,109,10,18,605,25,86,28,51,25,69,58,8,635,36,91,79,33,8,43,58,13,312,69,13,5,43,3,56,249,51,165,91,5,13,41,53,30,3,81,15,38,13,10,48,99,310,8,61,18,389],"type":"box","name":"USC00309516","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-
-
-
 
 </div>
 
 <script>
 
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
-}
 $(document).ready(function () {
-  bootstrapStylePandocTables();
+
+  // add bootstrap table styles to pandoc tables
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+
+  // initialize mathjax
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+  document.getElementsByTagName("head")[0].appendChild(script);
+
 });
-
-
 </script>
 
-<!-- tabsets -->
+<div id="flexdashboard-source-code">
+<pre class="line-numbers"><code class="language-r">---
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+---
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+data(ny_noaa)
+```
 
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Relationship between the tmin and tmax of weather station ADDISON, NY in 2000
+
+```{r}
+ny_noaa %>%
+  drop_na(tmax, tmin) %>%
+  separate(date, into = c("year", "month", "day"), sep = "\\-") %>%
+  filter(id == "USC00300023", year == "2000") %>%
+  mutate(tmax = as.numeric(tmax), tmin = as.numeric(tmin)) %>%
+  mutate(text_label = str_c("prcp: ", prcp, "\nsnow: ", snow)) %>%
+  plot_ly(
+    x = ~tmin, y = ~tmax, type = "scatter", mode = "markers",
+    color = ~month, text = ~text_label)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Weather stations with more than 1000 observations of prcp > 0 from 2005 to 2010
+
+```{r}
+ny_noaa %>%
+  separate(date, into = c("year", "month", "day"), sep = "\\-") %>%
+  mutate(year = as.numeric(year)) %>%
+  filter(year >= 2005, prcp > 0) %>%
+  count(id) %>% 
+  filter(n > 1000) %>%
+  mutate(id = fct_reorder(id, n)) %>% 
+  plot_ly(x = ~id, y = ~n, color = ~id, type = "bar", colors = "viridis")
+```
+
+### Boxplot of prcp of weather stations that have average prcp over 100mm in 2000
+
+
+```{r}
+ny_noaa %>%
+  separate(date, into = c("year", "month", "day"), sep = "\\-") %>%
+  filter(year == "2000", prcp > 0) %>%
+  group_by(id) %>%
+  mutate(mean_prcp = mean(prcp)) %>%
+  filter(mean_prcp > 100) %>%
+  mutate(id = fct_reorder(id, mean_prcp)) %>%
+  plot_ly(y = ~prcp, color = ~id, type = "box", colors = "viridis")
+```
+
+</code></pre>
+</div>
+<script type="text/javascript">
 $(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open');
+  FlexDashboard.init({
+    theme: "cosmo",
+    fillPage: true,
+    orientation: "columns",
+    storyboard: false,
+    defaultFigWidth: 576,
+    defaultFigHeight: 460,
+    defaultFigWidthMobile: 360,
+    defaultFigHeightMobile: 460,
+    resize_reload: true
   });
 });
-</script>
-
-<!-- code folding -->
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
 </script>
 
 </body>
